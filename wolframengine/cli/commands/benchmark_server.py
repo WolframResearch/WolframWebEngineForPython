@@ -5,8 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import time
 from operator import itemgetter
 
-import aiohttp
-
+from wolframclient.utils.api import aiohttp
 from wolframclient.cli.utils import SimpleCommand
 from wolframclient.evaluation import (WolframEvaluatorPool,
                                       WolframLanguageAsyncSession)
