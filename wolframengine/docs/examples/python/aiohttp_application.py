@@ -3,7 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from wolframclient.evaluation import WolframEvaluatorPool
-from wolframclient.http import aiohttp_wl_view
+from wolframengine.web import aiohttp_wl_view
 from wolframclient.language import wl
 
 from aiohttp import web
