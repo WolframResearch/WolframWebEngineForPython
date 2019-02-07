@@ -2,16 +2,16 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import os
+import shutil
+import tempfile
+import uuid
+
 from wolframclient.language import wl
 from wolframclient.utils import six
 from wolframclient.utils.api import aiohttp
 from wolframclient.utils.decorators import to_dict
 from wolframclient.utils.encoding import force_text
-
-import os
-import uuid
-import tempfile
-import shutil
 
 
 def to_multipart(v):
@@ -39,7 +39,8 @@ def aiohttp_request_meta(request, post):
     yield 'PathString', request.url.path
     yield 'QueryString', request.url.query_string
     yield 'Headers', tuple(wl.Rule(k, v) for k, v in request.headers.items())
-    yield 'MultipartElements', tuple(wl.Rule(k, to_multipart(v)) for k, v in post.items())
+    yield 'MultipartElements', tuple(
+        wl.Rule(k, to_multipart(v)) for k, v in post.items())
 
 
 async def generate_http_response(session, request, expression):

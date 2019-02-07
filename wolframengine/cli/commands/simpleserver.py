@@ -5,10 +5,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 from wolframclient.cli.utils import SimpleCommand
 from wolframclient.evaluation import (WolframEvaluatorPool,
                                       WolframLanguageAsyncSession)
-from wolframengine.web import aiohttp_wl_view
 from wolframclient.language import wl, wlexpr
 from wolframclient.utils.api import aiohttp, asyncio
 from wolframclient.utils.functional import composition, first, identity
+from wolframengine.web import aiohttp_wl_view
 
 
 class Command(SimpleCommand):
@@ -54,7 +54,8 @@ class Command(SimpleCommand):
     def create_handler(self, expressions, get, autoreload):
 
         exprs = (*map(wlexpr, expressions), *map(
-            composition(wl.Get, autoreload and identity or wl.Once, wl.Unevaluated), get or ()))
+            composition(wl.Get, autoreload and identity or wl.Once,
+                        wl.Unevaluated), get or ()))
 
         if not exprs:
             return wl.HTTPResponse("<h1>It works!</h1>")
