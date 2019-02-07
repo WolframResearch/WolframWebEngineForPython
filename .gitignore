@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+*$py.class
+/build
+/dist
+*.egg-info
+wolframclient/tests/local_config.json
+/htmlcov
+.coverage
+.vscode
+*.code-workspace
