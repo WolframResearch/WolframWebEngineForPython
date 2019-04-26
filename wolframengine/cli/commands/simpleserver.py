@@ -8,8 +8,10 @@ from wolframclient.evaluation import (WolframEvaluatorPool,
 from wolframclient.language import wl, wlexpr
 from wolframclient.utils.api import aiohttp, asyncio
 from wolframclient.utils.functional import composition, first, identity
+from wolframengine.explorer import get_wl_handler_path_from_folder
 from wolframengine.web import aiohttp_wl_view
 
+import os
 
 class Command(SimpleCommand):
     """ Run test suites from the tests modules.
@@ -45,6 +47,11 @@ class Command(SimpleCommand):
             help=
             'Insert the server should should start the kernels immediately.',
             action='store_true')
+        parser.add_argument(
+            '--folder',
+            default=False,
+            help='Adding a folder root to serve wolfram language content',
+        )
 
     def create_session(self, path, poolsize=1, **opts):
         if poolsize <= 1:
@@ -58,22 +65,33 @@ class Command(SimpleCommand):
                         wl.Unevaluated), get or ()))
 
         if not exprs:
-            return wl.HTTPResponse("<h1>It works!</h1>")
+            return wl.HTTPResponse("<h1>Page not found</h1>",
+                                   {'StatusCode': 404})
         elif len(exprs) == 1:
             return first(exprs)
         return wl.CompoundExpression(*exprs)
 
-    def get_web_app(self, expressions, kernel, poolsize, preload, **opts):
+    def get_web_app(self, expressions, kernel, poolsize, preload, folder,
+                    autoreload, **opts):
 
         session = self.create_session(
             kernel, poolsize=poolsize, inputform_string_evaluation=False)
-        handler = self.create_handler(expressions, **opts)
+        handler = self.create_handler(
+            expressions, autoreload=autoreload, **opts)
 
         routes = aiohttp.RouteTableDef()
 
         @routes.route('*', '/{tail:.*}')
         @aiohttp_wl_view(session)
         async def main(request):
+            if folder:
+                path = get_wl_handler_path_from_folder(
+                    os.path.expanduser(folder), request.path)
+                if path:
+                    if autoreload:
+                        return wl.Get(path)
+                    else:
+                        return wl.Once(wl.Get(path))
             return handler
 
         app = aiohttp.Application()
