@@ -16,6 +16,33 @@ That should be it!
 
 ### Options
 
+```
+>>> python3 -m wolframengine simpleserver --help
+usage: wolframengine.cli.commands.simpleserver.Command [-h] [--get GET]
+                                                       [--port PORT]
+                                                       [--kernel KERNEL]
+                                                       [--poolsize POOLSIZE]
+                                                       [--autoreload]
+                                                       [--preload]
+                                                       [--folder FOLDER]
+                                                       [expressions [expressions ...]]
+
+positional arguments:
+  expressions
+
+optional arguments:
+  -h, --help           show this help message and exit
+  --get GET            Insert the string to Get.
+  --port PORT          Insert the port.
+  --kernel KERNEL      Insert the kernel path.
+  --poolsize POOLSIZE  Insert the kernel pool size.
+  --autoreload         Insert the server should autoreload the WL input
+                       expression.
+  --preload            Insert the server should should start the kernels
+                       immediately.
+  --folder FOLDER      Adding a folder root to serve wolfram language content
+```
+
 optional arguments:
   -h, --help           show this help message and exit
   --get GET            Insert the string to Get.
