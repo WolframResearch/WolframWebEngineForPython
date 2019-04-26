@@ -11,6 +11,7 @@ from wolframclient.utils.functional import composition, first, identity
 from wolframengine.explorer import get_wl_handler_path_from_folder
 from wolframengine.web import aiohttp_wl_view
 
+import os
 
 class Command(SimpleCommand):
     """ Run test suites from the tests modules.
@@ -84,7 +85,8 @@ class Command(SimpleCommand):
         @aiohttp_wl_view(session)
         async def main(request):
             if folder:
-                path = get_wl_handler_path_from_folder(os.path.expanduser(folder), request.path)
+                path = get_wl_handler_path_from_folder(
+                    os.path.expanduser(folder), request.path)
                 if path:
                     if autoreload:
                         return wl.Get(path)
