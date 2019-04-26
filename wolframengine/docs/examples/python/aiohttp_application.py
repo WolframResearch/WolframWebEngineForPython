@@ -9,7 +9,6 @@ from wolframclient.language import wl
 from wolframengine.web import aiohttp_wl_view
 
 session = WolframEvaluatorPool(poolsize=4)
-
 routes = web.RouteTableDef()
 
 
@@ -42,4 +41,6 @@ async def app_view(request):
 
 app = web.Application()
 app.add_routes(routes)
-web.run_app(app)
+
+if __name__ == '__main__':
+    web.run_app(app)
