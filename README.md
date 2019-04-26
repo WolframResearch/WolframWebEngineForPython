@@ -116,3 +116,11 @@ Wolfram Engine for Python provides bindings for popular frameworks and allows yo
 A simple example of how to integrate a Wolfram Kernel in your application can be found here:
 
 [aiohttp_application.py](https://stash.wolfram.com/projects/LCL/repos/wolframengineforpython/browse/wolframengine/docs/examples/python/aiohttp_application.py)
+
+You can run the app by doing:
+
+```
+>>> python3 path/to/wolframengineforpython/wolframengine/docs/examples/python/aiohttp_application.py
+======== Running on http://0.0.0.0:8080 ========
+(Press CTRL+C to quit)
+```
