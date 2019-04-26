@@ -8,7 +8,8 @@ Make sure the library is in your PATH then run
 
 ```>>> python3 -m wolframengine simpleserver 'Now'
 ======== Running on http://0.0.0.0:18000 ========
-(Press CTRL+C to quit)```
+(Press CTRL+C to quit)
+```
 
 That should be it!
 
@@ -37,7 +38,8 @@ then from CLI Run
 
 ```>>> python3 -m wolframengine simpleserver --get 'code.m'
 ======== Running on http://0.0.0.0:18000 ========
-(Press CTRL+C to quit)```
+(Press CTRL+C to quit)
+```
 
 #### --autoreload
 
@@ -45,7 +47,8 @@ If --autoreload is present then every request will run the source code again.
 
 ```>>> python3 -m wolframengine simpleserver --get 'code.m' --autoreload
 ======== Running on http://0.0.0.0:18000 ========
-(Press CTRL+C to quit)```
+(Press CTRL+C to quit)
+```
 
 Visit the browser and refresh the page.
 
@@ -58,7 +61,8 @@ Starts a server that is first checking if code is present on a local folder.
 
 ```>>> python3 -m wolframengine simpleserver --folder 'path/to/folder' --autoreload
 ======== Running on http://0.0.0.0:18000 ========
-(Press CTRL+C to quit)```
+(Press CTRL+C to quit)
+```
 
 to document
 
@@ -68,7 +72,8 @@ Allows you to specify the PORT of the webserver. Defaults to 18000.
 
 ```>>> python3 -m wolframengine simpleserver --port 8080
 ======== Running on http://0.0.0.0:8080 ========
-(Press CTRL+C to quit)```
+(Press CTRL+C to quit)
+```
 
 #### --kernel KERNEL
 
@@ -76,7 +81,8 @@ Allows you to specify the Kernel path
 
 ```>>> python3 -m wolframengine simpleserver --kernel '/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 ======== Running on http://0.0.0.0:8080 ========
-(Press CTRL+C to quit)```
+(Press CTRL+C to quit)
+```
 
 #### --poolsize SIZE
 
@@ -84,7 +90,8 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 
 ```>>> python3 -m wolframengine simpleserver --poolsize 4
 ======== Running on http://0.0.0.0:8080 ========
-(Press CTRL+C to quit)```
+(Press CTRL+C to quit)
+```
 
 
 #### --preload 
