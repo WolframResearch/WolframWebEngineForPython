@@ -1,4 +1,4 @@
-#Wolfram Engine for Python
+# Wolfram Engine for Python
 
 Wolfram Engine for Python allows you to use a Wolfram Kernel during a web request.
 
@@ -106,3 +106,13 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 #### --preload 
 
 Whatever the server should immediatly spawn kernels instead of waiting for the first request
+
+## Embedded Version
+
+Wolfram Engine for Python provides bindings for popular frameworks and allows you to write a new one easily.
+
+### Bindings for AIOHTTP
+
+A simple example of how to integrate a Wolfram Kernel in your application can be found here:
+
+[aiohttp_application.py](https://stash.wolfram.com/projects/LCL/repos/wolframengineforpython/browse/wolframengine/docs/examples/python/aiohttp_application.py)
