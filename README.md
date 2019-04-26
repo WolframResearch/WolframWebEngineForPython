@@ -43,18 +43,6 @@ optional arguments:
   --folder FOLDER      Adding a folder root to serve wolfram language content
 ```
 
-optional arguments:
-  -h, --help           show this help message and exit
-  --get GET            Insert the string to Get.
-  --port PORT          Insert the port.
-  --kernel KERNEL      Insert the kernel path.
-  --poolsize POOLSIZE  Insert the kernel pool size.
-  --autoreload         Insert the server should autoreload the WL input
-                       expression.
-  --preload            Insert the server should should start the kernels
-                       immediately.
-  --folder FOLDER      Adding a folder root to serve wolfram language content
-
 #### --get
 Used --get to specify a path to a .m file which contains the code to run.
 
