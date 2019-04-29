@@ -108,16 +108,16 @@ class Command(SimpleCommand):
 
     def handle(self, domain, port, path, kernel, poolsize, lazy, cached, **opts):
 
-        session = self.create_session(
-            kernel, poolsize=poolsize, inputform_string_evaluation=False)
+        session = self.create_session(kernel, poolsize=poolsize, inputform_string_evaluation=False)
         view = self.create_view(session, path, cached=cached, **opts)
         
         async def main():
+
+            self.print("======= Serving on http://%s:%s/ ======" % (domain, port))
+
             runner = web.ServerRunner(web.Server(view))
             await runner.setup()
             await web.TCPSite(runner, domain, port).start()
-
-            print("======= Serving on http://%s:%s/ ======" % (domain, port))
 
             if not lazy:
                 await session.start()
