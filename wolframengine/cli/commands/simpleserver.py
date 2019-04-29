@@ -71,9 +71,10 @@ class Command(SimpleCommand):
 
         @aiohttp_wl_view(session)
         async def get_code(request, location=path):
+            expr = self.get_wl_handler(location)(location)
             if cached:
-                return wl.Once(self.get_wl_handler(location)(location))
-            return self.get_wl_handler(location)(location)
+                return wl.Once(expr)
+            return expr
 
         if os.path.isdir(path):
 
@@ -90,6 +91,8 @@ class Command(SimpleCommand):
             return view
 
         elif os.path.exists(path):
+            if not self.is_wl_code(path):
+                raise ValueError('%s must be one of the following formats: %s' % (path, ', '.join(self.EXTENSIONS.keys())))
             return get_code
         else:
             raise ValueError('%s is not an existing path on disk.' % path)
