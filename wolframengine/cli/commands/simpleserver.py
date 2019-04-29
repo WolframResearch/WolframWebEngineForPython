@@ -49,9 +49,21 @@ class Command(SimpleCommand):
             return WolframLanguageAsyncSession(path, **opts)
         return WolframEvaluatorPool(path, poolsize=poolsize, **opts)
 
+    EXTENSIONS = {
+        '.wxf': wl.Function(wl.Import(wl.Slot(), 'WXF')),
+        '.mx':  wl.Function(wl.Import(wl.Slot(), 'MX')),
+        '.m':   wl.Get, 
+        '.wl':  wl.Get, 
+    }
+
     def is_wl_code(self, path):
-        return last(os.path.splitext(path)).lower() in ('.m', '.mt', '.wl',
-                                                        '.mx', '.wxf')
+        try:
+            return bool(self.get_wl_handler(path))
+        except KeyError:
+            return False
+
+    def get_wl_handler(self, path):
+        return self.EXTENSIONS[last(os.path.splitext(path)).lower()]
 
     def create_view(self, session, path, cached):
 
@@ -60,8 +72,8 @@ class Command(SimpleCommand):
         @aiohttp_wl_view(session)
         async def get_code(request, location=path):
             if cached:
-                return wl.Once(wl.Get(location))
-            return wl.Get(location)
+                return wl.Once(self.get_wl_handler(location)(location))
+            return self.get_wl_handler(location)(location)
 
         if os.path.isdir(path):
 
@@ -91,7 +103,7 @@ class Command(SimpleCommand):
         routes = aiohttp.RouteTableDef()
 
         @routes.route('*', '/{tail:.*}')
-        def main(request):
+        async def main(request):
             return await view(request)
 
         app = aiohttp.Application()
