@@ -122,7 +122,8 @@ class Command(SimpleCommand):
             if not lazy:
                 await session.start()
 
-            await asyncio.sleep(100*3600)
+            while True:
+                await asyncio.sleep(3600)
 
         loop = asyncio.get_event_loop()
         try:
