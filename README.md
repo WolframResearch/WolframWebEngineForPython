@@ -4,10 +4,10 @@ Wolfram Engine for Python allows you to use a Wolfram Kernel during a web reques
 
 ## Standalone version
 
-Make sure the library is in your PATH then run
+Make sure the library is in your PATH then run.
 
 ```
->>> python3 -m wolframengine simpleserver 'Now'
+>>> python3 -m wolframengine simpleserver
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
@@ -18,74 +18,72 @@ That should be it!
 
 ```
 >>> python3 -m wolframengine simpleserver --help
-usage: wolframengine.cli.commands.simpleserver.Command [-h] [--get GET]
-                                                       [--port PORT]
+usage: wolframengine.cli.commands.simpleserver.Command [-h] [--port PORT]
                                                        [--kernel KERNEL]
                                                        [--poolsize POOLSIZE]
-                                                       [--autoreload]
-                                                       [--preload]
-                                                       [--folder FOLDER]
-                                                       [expressions [expressions ...]]
+                                                       [--cached] [--lazy]
+                                                       [path]
 
 positional arguments:
-  expressions
+  path
 
 optional arguments:
   -h, --help           show this help message and exit
-  --get GET            Insert the string to Get.
   --port PORT          Insert the port.
   --kernel KERNEL      Insert the kernel path.
   --poolsize POOLSIZE  Insert the kernel pool size.
-  --autoreload         Insert the server should autoreload the WL input
-                       expression.
-  --preload            Insert the server should should start the kernels
-                       immediately.
-  --folder FOLDER      Adding a folder root to serve wolfram language content
+  --cached             The server will cache the WL input expression.
+  --lazy               The server will start the kernels on the first request.
+  --index              The file name to search for folder index.
 ```
 
-#### --get
-Used --get to specify a path to a .m file which contains the code to run.
+#### path
+
+The first argument can be a folder or a single file.
 
 Write a file on your current folder:
 
 ```
->>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' >> code.m
+>>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' >> index.m
 ```
 
 then from CLI Run
 
 ```
->>> python3 -m wolframengine simpleserver --get 'code.m'
+>>> python3 -m wolframengine simpleserver
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
 
-#### --autoreload
+If the first argument is a file, all request path will be routed to the same expression.
+If the first argument is a folder, requests will be redirected to the kernel if the url extension ends with '.m', '.mx', '.wxf', '.wl'.
 
-If --autoreload is present then every request will run the source code again.
+If the request path is a folder the server will search for an index.m in the same folder.
+
+#### --index
+
+Specify the default file name for folder index.
+Defaults to index.m
 
 ```
->>> python3 -m wolframengine simpleserver --get 'code.m' --autoreload
+>>> python3 -m wolframengine simpleserver --index index.wxf
+======== Running on http://0.0.0.0:18000 ========
+(Press CTRL+C to quit)
+```
+
+
+#### --cached
+
+If --cached is present then every request will run the source code once
+
+```
+>>> python3 -m wolframengine simpleserver 'index.m' --cached
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
 
 Visit the browser and refresh the page.
 
-Only works with --get and --folder.
-
-#### --folder
-
-Starts a server that is first checking if code is present on a local folder.
-
-
-```
->>> python3 -m wolframengine simpleserver --folder 'path/to/folder' --autoreload
-======== Running on http://0.0.0.0:18000 ========
-(Press CTRL+C to quit)
-```
-
-to document
 
 #### --port PORT
 
@@ -118,9 +116,9 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 ```
 
 
-#### --preload 
+#### --lazy 
 
-Whatever the server should immediatly spawn kernels instead of waiting for the first request
+If the option is present the server will wait for the first request to spawn the kernels, instead of spawning them immediately.
 
 ## Embedded Version
 

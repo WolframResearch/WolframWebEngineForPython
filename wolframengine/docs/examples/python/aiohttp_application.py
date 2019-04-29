@@ -20,11 +20,11 @@ async def hello(request):
 @routes.get('/form')
 @aiohttp_wl_view(session)
 async def form_view(request):
-    return wl.FormFunction(
-        {"x": "String"},
-        wl.Identity,
-        AppearanceRules={"Title": "Hello from WL!"}
-    )
+    return wl.FormFunction({
+        "x": "String"
+    },
+                           wl.Identity,
+                           AppearanceRules={"Title": "Hello from WL!"})
 
 
 @routes.get('/api')
