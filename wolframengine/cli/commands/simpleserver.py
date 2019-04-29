@@ -21,6 +21,10 @@ class Command(SimpleCommand):
     A list of patterns can be provided to specify the tests to run.
     """
 
+    ServerRunner = web.ServerRunner
+    Server = web.Server
+    TCPSite = web.TCPSite
+
     def add_arguments(self, parser):
         parser.add_argument('path', default='.', nargs='?')
         parser.add_argument('--port', default=18000, help='Insert the port.')
@@ -119,9 +123,9 @@ class Command(SimpleCommand):
             self.print(
                 "======= Serving on http://%s:%s/ ======" % (domain, port))
 
-            runner = web.ServerRunner(web.Server(view))
+            runner = self.ServerRunner(self.Server(view))
             await runner.setup()
-            await web.TCPSite(runner, domain, port).start()
+            await self.TCPSite(runner, domain, port).start()
 
             if not lazy:
                 await session.start()
