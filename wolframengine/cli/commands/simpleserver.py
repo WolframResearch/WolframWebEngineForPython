@@ -133,7 +133,7 @@ class Command(SimpleCommand):
         try:
             loop.run_until_complete(main())
         except KeyboardInterrupt:
-            print('Requested server shutdown, closing session...')
+            self.print('Requested server shutdown, closing session...')
             loop.run_until_complete(session.stop())
 
         loop.close()
