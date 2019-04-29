@@ -35,14 +35,20 @@ class Command(SimpleCommand):
         parser.add_argument(
             '--cached',
             default=False,
-            help='Insert the server should cache the WL input expression.',
+            help='The server will cache the WL input expression.',
             action='store_true')
         parser.add_argument(
             '--lazy',
             default=False,
             help=
-            'Insert the server should should start the kernels on the first request.',
+            'The server will start the kernels on the first request.',
             action='store_true')
+        parser.add_argument(
+            '--index',
+            default='index.m',
+            help=
+            'The file name to search for folder index.',
+        )
 
     def create_session(self, path, poolsize=1, **opts):
         if poolsize <= 1:
@@ -65,7 +71,7 @@ class Command(SimpleCommand):
     def get_wl_handler(self, path):
         return self.EXTENSIONS[last(os.path.splitext(path)).lower()]
 
-    def create_view(self, session, path, cached):
+    def create_view(self, session, path, cached, index):
 
         path = os.path.abspath(os.path.expanduser(path))
 
@@ -79,7 +85,7 @@ class Command(SimpleCommand):
         if os.path.isdir(path):
 
             async def view(request):
-                loc = get_wl_handler_path_from_folder(path, request.path)
+                loc = get_wl_handler_path_from_folder(path, request.path, index = index)
 
                 if not loc:
                     return aiohttp.Response(body = 'Page not found', status = 404)
