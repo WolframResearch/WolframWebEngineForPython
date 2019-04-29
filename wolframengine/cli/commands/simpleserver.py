@@ -8,10 +8,12 @@ from wolframclient.cli.utils import SimpleCommand
 from wolframclient.evaluation import (WolframEvaluatorPool,
                                       WolframLanguageAsyncSession)
 from wolframclient.language import wl
-from wolframclient.utils.api import aiohttp, asyncio
+from wolframclient.utils.api import asyncio
 from wolframclient.utils.functional import last
 from wolframengine.explorer import get_wl_handler_path_from_folder
 from wolframengine.web import aiohttp_wl_view
+
+from aiohttp import web
 
 
 class Command(SimpleCommand):
@@ -22,6 +24,7 @@ class Command(SimpleCommand):
     def add_arguments(self, parser):
         parser.add_argument('path', default='.', nargs='?')
         parser.add_argument('--port', default=18000, help='Insert the port.')
+        parser.add_argument('--domain', default='localhost', help='Insert the domain.')
         parser.add_argument(
             '--kernel',
             default=
@@ -88,11 +91,11 @@ class Command(SimpleCommand):
                 loc = get_wl_handler_path_from_folder(path, request.path, index = index)
 
                 if not loc:
-                    return aiohttp.Response(body = 'Page not found', status = 404)
+                    return web.Response(body = 'Page not found', status = 404)
 
                 if self.is_wl_code(loc):
                     return await get_code(request, location=loc)
-                return aiohttp.FileResponse(loc)
+                return web.FileResponse(loc)
 
             return view
 
@@ -103,25 +106,29 @@ class Command(SimpleCommand):
         else:
             raise ValueError('%s is not an existing path on disk.' % path)
 
-    def get_web_app(self, path, kernel, poolsize, lazy, cached, **opts):
+    def handle(self, domain, port, path, kernel, poolsize, lazy, cached, **opts):
 
         session = self.create_session(
             kernel, poolsize=poolsize, inputform_string_evaluation=False)
         view = self.create_view(session, path, cached=cached, **opts)
+        
+        async def main():
+            runner = web.ServerRunner(web.Server(view))
+            await runner.setup()
+            await web.TCPSite(runner, domain, port).start()
 
-        routes = aiohttp.RouteTableDef()
+            print("======= Serving on http://%s:%s/ ======" % (domain, port))
 
-        @routes.route('*', '/{tail:.*}')
-        async def main(request):
-            return await view(request)
+            if not lazy:
+                await session.start()
 
-        app = aiohttp.Application()
-        app.add_routes(routes)
+            await asyncio.sleep(100*3600)
 
-        if not lazy:
-            asyncio.ensure_future(session.start())
+        loop = asyncio.get_event_loop()
+        try:
+            loop.run_until_complete(main())
+        except KeyboardInterrupt:
+            print('Requested server shutdown, closing session...')
+            loop.run_until_complete(session.stop())
 
-        return app
-
-    def handle(self, port, **opts):
-        aiohttp.run_app(self.get_web_app(**opts), port=port)
+        loop.close()
