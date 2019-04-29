@@ -2,16 +2,17 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import os
+
 from wolframclient.cli.utils import SimpleCommand
 from wolframclient.evaluation import (WolframEvaluatorPool,
                                       WolframLanguageAsyncSession)
-from wolframclient.language import wl, wlexpr
+from wolframclient.language import wl
 from wolframclient.utils.api import aiohttp, asyncio
-from wolframclient.utils.functional import composition, first, identity
+from wolframclient.utils.functional import last
 from wolframengine.explorer import get_wl_handler_path_from_folder
 from wolframengine.web import aiohttp_wl_view
 
-import os
 
 class Command(SimpleCommand):
     """ Run test suites from the tests modules.
@@ -19,12 +20,7 @@ class Command(SimpleCommand):
     """
 
     def add_arguments(self, parser):
-        parser.add_argument('expressions', nargs='*', type=str)
-        parser.add_argument(
-            '--get',
-            help='Insert the string to Get.',
-            action='append',
-            default=None)
+        parser.add_argument('path', default='.', nargs='?')
         parser.add_argument('--port', default=18000, help='Insert the port.')
         parser.add_argument(
             '--kernel',
@@ -37,67 +33,67 @@ class Command(SimpleCommand):
             help='Insert the kernel pool size.',
             type=int)
         parser.add_argument(
-            '--autoreload',
+            '--cached',
             default=False,
-            help='Insert the server should autoreload the WL input expression.',
+            help='Insert the server should cache the WL input expression.',
             action='store_true')
         parser.add_argument(
-            '--preload',
+            '--lazy',
             default=False,
             help=
-            'Insert the server should should start the kernels immediately.',
+            'Insert the server should should start the kernels on the first request.',
             action='store_true')
-        parser.add_argument(
-            '--folder',
-            default=False,
-            help='Adding a folder root to serve wolfram language content',
-        )
 
     def create_session(self, path, poolsize=1, **opts):
         if poolsize <= 1:
             return WolframLanguageAsyncSession(path, **opts)
         return WolframEvaluatorPool(path, poolsize=poolsize, **opts)
 
-    def create_handler(self, expressions, get, autoreload):
+    def is_wl_code(self, path):
+        return last(os.path.splitext(path)).lower() in ('.m', '.mt', '.wl',
+                                                        '.mx', '.wxf')
 
-        exprs = (*map(wlexpr, expressions), *map(
-            composition(wl.Get, autoreload and identity or wl.Once,
-                        wl.Unevaluated), get or ()))
+    def create_handler(self, session, path, cached):
 
-        if not exprs:
-            return wl.HTTPResponse("<h1>Page not found</h1>",
-                                   {'StatusCode': 404})
-        elif len(exprs) == 1:
-            return first(exprs)
-        return wl.CompoundExpression(*exprs)
+        path = os.path.abspath(os.path.expanduser(path))
 
-    def get_web_app(self, expressions, kernel, poolsize, preload, folder,
-                    autoreload, **opts):
+        @aiohttp_wl_view(session)
+        async def get_code(request, location=path):
+            if cached:
+                return wl.Once(wl.Get(location))
+            return wl.Get(location)
+
+        if os.path.isdir(path):
+
+            async def view(request):
+                loc = get_wl_handler_path_from_folder(path, request.path)
+                if self.is_wl_code(loc):
+                    return await get_code(request, location=loc)
+                return aiohttp.FileResponse(loc)
+
+            return view
+
+        elif os.path.exists(path):
+            return get_code
+        else:
+            raise ValueError('%s is not an existing path on disk.' % path)
+
+    def get_web_app(self, path, kernel, poolsize, lazy, cached, **opts):
 
         session = self.create_session(
             kernel, poolsize=poolsize, inputform_string_evaluation=False)
-        handler = self.create_handler(
-            expressions, autoreload=autoreload, **opts)
+        handler = self.create_handler(session, path, cached=cached, **opts)
 
         routes = aiohttp.RouteTableDef()
 
         @routes.route('*', '/{tail:.*}')
-        @aiohttp_wl_view(session)
         async def main(request):
-            if folder:
-                path = get_wl_handler_path_from_folder(
-                    os.path.expanduser(folder), request.path)
-                if path:
-                    if autoreload:
-                        return wl.Get(path)
-                    else:
-                        return wl.Once(wl.Get(path))
-            return handler
+            return await handler(request)
 
         app = aiohttp.Application()
         app.add_routes(routes)
 
-        if preload:
+        if not lazy:
             asyncio.ensure_future(session.start())
 
         return app
