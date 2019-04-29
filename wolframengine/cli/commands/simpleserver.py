@@ -102,8 +102,5 @@ class Command(SimpleCommand):
 
         return app
 
-    def exception_handler(self, exception, context):
-        pass
-
     def handle(self, port, **opts):
         aiohttp.run_app(self.get_web_app(**opts), port=port)
