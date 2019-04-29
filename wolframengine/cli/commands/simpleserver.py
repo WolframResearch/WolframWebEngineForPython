@@ -53,7 +53,7 @@ class Command(SimpleCommand):
         return last(os.path.splitext(path)).lower() in ('.m', '.mt', '.wl',
                                                         '.mx', '.wxf')
 
-    def create_handler(self, session, path, cached):
+    def create_view(self, session, path, cached):
 
         path = os.path.abspath(os.path.expanduser(path))
 
@@ -67,6 +67,10 @@ class Command(SimpleCommand):
 
             async def view(request):
                 loc = get_wl_handler_path_from_folder(path, request.path)
+
+                if not loc:
+                    return aiohttp.Response(body = 'Page not found', status = 404)
+
                 if self.is_wl_code(loc):
                     return await get_code(request, location=loc)
                 return aiohttp.FileResponse(loc)
@@ -82,13 +86,13 @@ class Command(SimpleCommand):
 
         session = self.create_session(
             kernel, poolsize=poolsize, inputform_string_evaluation=False)
-        handler = self.create_handler(session, path, cached=cached, **opts)
+        view = self.create_view(session, path, cached=cached, **opts)
 
         routes = aiohttp.RouteTableDef()
 
         @routes.route('*', '/{tail:.*}')
-        async def main(request):
-            return await handler(request)
+        def main(request):
+            return await view(request)
 
         app = aiohttp.Application()
         app.add_routes(routes)
