@@ -32,8 +32,7 @@ class Command(SimpleCommand):
             '--domain', default='localhost', help='Insert the domain.')
         parser.add_argument(
             '--kernel',
-            default=
-            '/Applications/Mathematica.app/Contents/MacOS/WolframKernel',
+            default=None,
             help='Insert the kernel path.')
         parser.add_argument(
             '--poolsize',
