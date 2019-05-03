@@ -20,7 +20,7 @@ Then start the server by doing:
 
 That should be it!
 
-## Single file application
+## Single file applications
 
 Writing an application using a single file.
 
@@ -47,9 +47,9 @@ http://localhost:18000/form
 http://localhost:18000/api
 ```
 
-For more information about single file application please read the documentation of [URLDispatcher](https://reference.wolfram.com/language/ref/URLDispatcher.html).
+For more information about single file applications please read the documentation of [URLDispatcher](https://reference.wolfram.com/language/ref/URLDispatcher.html).
 
-## Multi file application
+## Multi file applications
 
 WolframWebEngine for python allows you to write an application by creating a folder structure that is served by the server.
 
