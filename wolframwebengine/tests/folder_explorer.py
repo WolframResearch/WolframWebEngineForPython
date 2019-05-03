@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 
 from wolframclient.utils.tests import TestCase as BaseTestCase
-from wolframengine.explorer import get_wl_handler_path_from_folder
+from wolframwebengine.explorer import get_wl_handler_path_from_folder
 
 
 class TestCase(BaseTestCase):

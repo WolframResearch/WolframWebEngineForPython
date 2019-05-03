@@ -6,7 +6,7 @@ from aiohttp import web
 
 from wolframclient.evaluation import WolframEvaluatorPool
 from wolframclient.language import wl
-from wolframengine.web import aiohttp_wl_view
+from wolframwebengine.web import aiohttp_wl_view
 
 session = WolframEvaluatorPool(poolsize=4)
 routes = web.RouteTableDef()

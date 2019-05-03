@@ -7,7 +7,7 @@ Wolfram Engine for Python allows you to use a Wolfram Kernel during a web reques
 Make sure the library is in your PATH then run.
 
 ```
->>> python3 -m wolframengine runserver
+>>> python3 -m wolframwebengine runserver
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
@@ -17,8 +17,8 @@ That should be it!
 ### Options
 
 ```
->>> python3 -m wolframengine runserver --help
-usage: wolframengine.cli.commands.runserver.Command [-h] [--port PORT]
+>>> python3 -m wolframwebengine runserver --help
+usage: wolframwebengine.cli.commands.runserver.Command [-h] [--port PORT]
                                                        [--kernel KERNEL]
                                                        [--poolsize POOLSIZE]
                                                        [--cached] [--lazy]
@@ -50,7 +50,7 @@ Write a file on your current folder:
 then from CLI Run
 
 ```
->>> python3 -m wolframengine runserver
+>>> python3 -m wolframwebengine runserver
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
@@ -66,7 +66,7 @@ Specify the default file name for folder index.
 Defaults to index.m
 
 ```
->>> python3 -m wolframengine runserver --index index.wxf
+>>> python3 -m wolframwebengine runserver --index index.wxf
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
@@ -77,7 +77,7 @@ Defaults to index.m
 If --cached is present then every request will run the source code once
 
 ```
->>> python3 -m wolframengine runserver 'index.m' --cached
+>>> python3 -m wolframwebengine runserver 'index.m' --cached
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
@@ -90,7 +90,7 @@ Visit the browser and refresh the page.
 Allows you to specify the PORT of the webserver. Defaults to 18000.
 
 ```
->>> python3 -m wolframengine runserver --port 8080
+>>> python3 -m wolframwebengine runserver --port 8080
 ======== Running on http://0.0.0.0:8080 ========
 (Press CTRL+C to quit)
 ```
@@ -100,7 +100,7 @@ Allows you to specify the PORT of the webserver. Defaults to 18000.
 Allows you to specify the Kernel path
 
 ```
->>> python3 -m wolframengine runserver --kernel '/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+>>> python3 -m wolframwebengine runserver --kernel '/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 ======== Running on http://0.0.0.0:8080 ========
 (Press CTRL+C to quit)
 ```
@@ -110,7 +110,7 @@ Allows you to specify the Kernel path
 Allows you to change the default pool size for kernels. Defaults to 1.
 
 ```
->>> python3 -m wolframengine runserver --poolsize 4
+>>> python3 -m wolframwebengine runserver --poolsize 4
 ======== Running on http://0.0.0.0:8080 ========
 (Press CTRL+C to quit)
 ```
@@ -128,12 +128,12 @@ Wolfram Engine for Python provides bindings for popular frameworks and allows yo
 
 A simple example of how to integrate a Wolfram Kernel in your application can be found here:
 
-[aiohttp_application.py](https://stash.wolfram.com/projects/LCL/repos/wolframengineforpython/browse/wolframengine/docs/examples/python/aiohttp_application.py)
+[aiohttp_application.py](https://stash.wolfram.com/projects/LCL/repos/wolframwebengineforpython/browse/wolframwebengine/docs/examples/python/aiohttp_application.py)
 
 You can run the app by doing:
 
 ```
->>> python3 path/to/wolframengineforpython/wolframengine/docs/examples/python/aiohttp_application.py
+>>> python3 path/to/wolframwebengineforpython/wolframwebengine/docs/examples/python/aiohttp_application.py
 ======== Running on http://0.0.0.0:8080 ========
 (Press CTRL+C to quit)
 ```

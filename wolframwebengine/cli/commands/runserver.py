@@ -12,8 +12,8 @@ from wolframclient.evaluation import (WolframEvaluatorPool,
 from wolframclient.language import wl
 from wolframclient.utils.api import asyncio
 from wolframclient.utils.functional import last
-from wolframengine.explorer import get_wl_handler_path_from_folder
-from wolframengine.web import aiohttp_wl_view
+from wolframwebengine.explorer import get_wl_handler_path_from_folder
+from wolframwebengine.web import aiohttp_wl_view
 
 
 class Command(SimpleCommand):

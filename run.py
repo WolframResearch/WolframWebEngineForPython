@@ -8,6 +8,6 @@ if __name__ == '__main__':
     #this should not be used in production, but it's handy when we are giving this paclet to other developers
     #as it provides convenient access to unit tests, profiler, and benchmarking.
 
-    from wolframengine.cli.dispatch import execute_from_command_line
+    from wolframwebengine.cli.dispatch import execute_from_command_line
 
     execute_from_command_line()
