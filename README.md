@@ -4,7 +4,7 @@ Wolfram Engine for Python allows you to use a Wolfram Kernel during a web reques
 
 ## Install
 
-Clone the repository and it to your python PATH or run:
+Clone the repository and add it to your python PATH or run:
 
 ```
 >>> pip install wolframengineforpython
