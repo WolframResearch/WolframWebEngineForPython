@@ -12,8 +12,8 @@ from wolframclient.evaluation import (WolframEvaluatorPool,
 from wolframclient.language import wl
 from wolframclient.utils.api import asyncio
 from wolframclient.utils.functional import last
-from wolframengine.explorer import get_wl_handler_path_from_folder
-from wolframengine.web import aiohttp_wl_view
+from wolframwebengine.explorer import get_wl_handler_path_from_folder
+from wolframwebengine.web import aiohttp_wl_view
 
 
 class Command(SimpleCommand):
@@ -32,8 +32,7 @@ class Command(SimpleCommand):
             '--domain', default='localhost', help='Insert the domain.')
         parser.add_argument(
             '--kernel',
-            default=
-            '/Applications/Mathematica.app/Contents/MacOS/WolframKernel',
+            default=None,
             help='Insert the kernel path.')
         parser.add_argument(
             '--poolsize',

@@ -5,8 +5,8 @@ from functools import partial
 import inspect
 
 available_backends = API(
-    aiohttp='wolframengine.web.aiohttp.generate_http_response',
-    django='wolframengine.web.django.generate_http_response',
+    aiohttp='wolframwebengine.web.aiohttp.generate_http_response',
+    django='wolframwebengine.web.django.generate_http_response',
 )
 
 if hasattr(inspect, 'iscoroutinefunction'):

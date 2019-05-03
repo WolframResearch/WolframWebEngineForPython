@@ -2,23 +2,96 @@
 
 Wolfram Engine for Python allows you to use a Wolfram Kernel during a web request.
 
-## Standalone version
+## Install
 
-Make sure the library is in your PATH then run.
+Clone the repository and add it to your python PATH or run:
 
 ```
->>> python3 -m wolframengine simpleserver
+>>> pip install wolframengineforpython
+```
+
+Then start the server by doing:
+
+```
+>>> python3 -m wolframwebengine
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
 
 That should be it!
 
+## Single file applications
+
+Writing an application using a single file.
+
+Create a folder named myapp.
+Write the following content on a file by running:
+
+```
+>>> echo 'URLDispatcher[{"/api" -> APIFunction["x" -> "String"], "/form" -> FormFunction["x" -> "String"], "/" -> "hello world!"}]' >  index.m
+```
+
+From the same location run:
+
+```
+>>> python3 -m wolframwebengine index.m
+======== Running on http://0.0.0.0:18000 ========
+(Press CTRL+C to quit)
+```
+
+Then try to open the following urls in your browser:
+
+```
+http://localhost:18000/
+http://localhost:18000/form
+http://localhost:18000/api
+```
+
+For more information about single file applications please read the documentation of [URLDispatcher](https://reference.wolfram.com/language/ref/URLDispatcher.html).
+
+## Multi file applications
+
+WolframWebEngine for python allows you to write an application by creating a folder structure that is served by the server.
+
+The server will serve content with the following rules:
+
+1. All files with extensions '.m', '.mx', '.wxf', '.wl' will be evaluated in the Kernel using [GenerateHTTPResponse](https://reference.wolfram.com/language/ref/GenerateHTTPResponse.html) over the result.
+2. Any other file will be served as static content.
+3. If the request path corrispond to a folder on disk, the server will search for a file named index.m in the same folder, this convention can be changed with the --index option.
+
+Create an application by running the following code in your current location:
+
+```
+mkdir testapp
+mkdir testapp/form
+mkdir testapp/api
+echo 'ExportForm[{"hello", UnixTime[]}, "JSON"]' >  testapp/index.m
+echo 'FormFunction["x" -> "String"]'             >  testapp/form/index.m
+echo 'APIFunction["x" -> "String"]'              >  testapp/api/index.m
+echo '["some", "static", "JSON"]'                >  testapp/static.json
+```
+
+Start the app by running:
+
+```
+>>> python3 -m wolframwebengine testapp
+======== Running on http://0.0.0.0:18000 ========
+(Press CTRL+C to quit)
+```
+
+Then open the browser at the following locations:
+```
+http://localhost:18000/
+http://localhost:18000/form
+http://localhost:18000/api
+http://localhost:18000/static.json
+```
+
 ### Options
 
 ```
->>> python3 -m wolframengine simpleserver --help
-usage: wolframengine.cli.commands.simpleserver.Command [-h] [--port PORT]
+>>> python3 -m wolframwebengine --help
+usage: wolframwebengine.cli.commands.runserver.Command [-h] [--port PORT]
                                                        [--kernel KERNEL]
                                                        [--poolsize POOLSIZE]
                                                        [--cached] [--lazy]
@@ -44,13 +117,13 @@ The first argument can be a folder or a single file.
 Write a file on your current folder:
 
 ```
->>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' >> index.m
+>>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' >  index.m
 ```
 
 then from CLI Run
 
 ```
->>> python3 -m wolframengine simpleserver
+>>> python3 -m wolframwebengine
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
@@ -66,7 +139,7 @@ Specify the default file name for folder index.
 Defaults to index.m
 
 ```
->>> python3 -m wolframengine simpleserver --index index.wxf
+>>> python3 -m wolframwebengine --index index.wxf
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
@@ -77,7 +150,7 @@ Defaults to index.m
 If --cached is present then every request will run the source code once
 
 ```
->>> python3 -m wolframengine simpleserver 'index.m' --cached
+>>> python3 -m wolframwebengine 'index.m' --cached
 ======== Running on http://0.0.0.0:18000 ========
 (Press CTRL+C to quit)
 ```
@@ -90,7 +163,7 @@ Visit the browser and refresh the page.
 Allows you to specify the PORT of the webserver. Defaults to 18000.
 
 ```
->>> python3 -m wolframengine simpleserver --port 8080
+>>> python3 -m wolframwebengine --port 8080
 ======== Running on http://0.0.0.0:8080 ========
 (Press CTRL+C to quit)
 ```
@@ -100,7 +173,7 @@ Allows you to specify the PORT of the webserver. Defaults to 18000.
 Allows you to specify the Kernel path
 
 ```
->>> python3 -m wolframengine simpleserver --kernel '/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+>>> python3 -m wolframwebengine --kernel '/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 ======== Running on http://0.0.0.0:8080 ========
 (Press CTRL+C to quit)
 ```
@@ -110,7 +183,7 @@ Allows you to specify the Kernel path
 Allows you to change the default pool size for kernels. Defaults to 1.
 
 ```
->>> python3 -m wolframengine simpleserver --poolsize 4
+>>> python3 -m wolframwebengine --poolsize 4
 ======== Running on http://0.0.0.0:8080 ========
 (Press CTRL+C to quit)
 ```
@@ -128,12 +201,12 @@ Wolfram Engine for Python provides bindings for popular frameworks and allows yo
 
 A simple example of how to integrate a Wolfram Kernel in your application can be found here:
 
-[aiohttp_application.py](https://stash.wolfram.com/projects/LCL/repos/wolframengineforpython/browse/wolframengine/docs/examples/python/aiohttp_application.py)
+[aiohttp_application.py](https://stash.wolfram.com/projects/LCL/repos/wolframwebengineforpython/browse/wolframwebengine/docs/examples/python/aiohttp_application.py)
 
 You can run the app by doing:
 
 ```
->>> python3 path/to/wolframengineforpython/wolframengine/docs/examples/python/aiohttp_application.py
+>>> python3 path/to/wolframwebengineforpython/wolframwebengine/docs/examples/python/aiohttp_application.py
 ======== Running on http://0.0.0.0:8080 ========
 (Press CTRL+C to quit)
 ```
