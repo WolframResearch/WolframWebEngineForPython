@@ -6,7 +6,8 @@ from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 
 from wolframclient.language import wl
 from wolframclient.utils.functional import first
-from wolframwebengine.server.app import create_session
+from wolframclient.utils.importutils import module_path
+from wolframwebengine.server.app import create_session, create_view
 from wolframwebengine.web import aiohttp_wl_view
 
 
@@ -31,6 +32,18 @@ class MyAppTestCase(AioHTTPTestCase):
         @aiohttp_wl_view(self.session)
         async def api_view(request):
             return wl.APIFunction({"x": "String"}, wl.Identity, "JSON")
+
+        path = module_path('wolframwebengine.tests', 'sampleapp')
+
+        for path, view in (('/cached',
+                            create_view(
+                                session=self.session,
+                                path=path,
+                                cached=True,
+                                index='index.m')), ):
+
+            routes.get(path)(view)
+            routes.post(path)(view)
 
         app = web.Application()
         app.add_routes(routes)
