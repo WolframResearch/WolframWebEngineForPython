@@ -4,16 +4,16 @@ from aiohttp import web
 from aiohttp.formdata import FormData
 from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 
-from wolframclient.evaluation import WolframEvaluatorPool
 from wolframclient.language import wl
 from wolframclient.utils.functional import first
+from wolframwebengine.server.app import create_session
 from wolframwebengine.web import aiohttp_wl_view
 
 
 class MyAppTestCase(AioHTTPTestCase):
     async def get_application(self):
 
-        self.session = WolframEvaluatorPool(poolsize=4)
+        self.session = create_session(poolsize=1)
         routes = web.RouteTableDef()
 
         @routes.get('/')
