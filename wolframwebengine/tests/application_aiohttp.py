@@ -6,7 +6,6 @@ from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 
 from wolframclient.evaluation import WolframEvaluatorPool
 from wolframclient.language import wl
-from wolframclient.utils import six
 from wolframclient.utils.functional import first
 from wolframwebengine.web import aiohttp_wl_view
 
@@ -39,7 +38,7 @@ class MyAppTestCase(AioHTTPTestCase):
         return app
 
     @unittest_run_loop
-    async def test_aiohhtp(self):
+    async def test_aiohttp(self):
 
         resp = await self.client.request("GET", "/")
 
@@ -70,12 +69,8 @@ class MyAppTestCase(AioHTTPTestCase):
         self.assertEqual((await resp.json())["x"], "foobar")
         self.assertEqual(resp.headers['Content-Type'], 'application/json')
 
-        stream = six.BytesIO()
-        stream.write(b'foobar')
-        stream.seek(0)
-
         data = FormData()
-        data.add_field('x', stream, filename='pixeltez.txt')
+        data.add_field('x', b'foobar', filename='somefile.txt')
 
         resp = await self.client.request("POST", "/form", data=data)
 
