@@ -44,7 +44,7 @@ class MyAppTestCase(AioHTTPTestCase):
                 session=self.session,
                 path=path,
                 cached=cached,
-                root=root,
+                path_extractor = lambda request, l = len(root): request.path[l:],
                 index='index.m')
 
             routes.get(root + '{name:.*}')(view)
@@ -112,27 +112,27 @@ class MyAppTestCase(AioHTTPTestCase):
         self.assertEqual(resp.status, 200)
         self.assertEqual(await resp.text(), "Hello from aiohttp")
 
-        for root in ('/', '/app'):
+        for root in ('', '/app'):
 
-            resp = await self.client.request("GET", root + "api")
+            resp = await self.client.request("GET", root + "/api")
 
             self.assertEqual(resp.status, 400)
             self.assertEqual((await resp.json())["Success"], False)
             self.assertEqual(resp.headers['Content-Type'], 'application/json')
 
-            resp = await self.client.request("GET", root + "api?x=a")
+            resp = await self.client.request("GET", root + "/api?x=a")
 
             self.assertEqual(resp.status, 200)
             self.assertEqual((await resp.json())["x"], "a")
             self.assertEqual(resp.headers['Content-Type'], 'application/json')
 
-            resp = await self.client.request("GET", root + "form")
+            resp = await self.client.request("GET", root + "/form")
 
             self.assertEqual(resp.status, 200)
             self.assertEqual(
                 first(resp.headers['Content-Type'].split(';')), 'text/html')
 
-            resp = await self.client.request("POST", root + "form", data={'x': "foobar"})
+            resp = await self.client.request("POST", root + "/form", data={'x': "foobar"})
 
             self.assertEqual(resp.status, 200)
             self.assertEqual((await resp.json())["x"], "foobar")

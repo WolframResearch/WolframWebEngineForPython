@@ -5,13 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 
 
-def get_wl_handler_path_from_folder(folder, path, index='index.m', root=None):
-
-    if root:
-        if path.startswith(root):
-            path = path[len(root):]
-        else:
-            return
+def get_wl_handler_path_from_folder(folder, path, index='index.m'):
 
     absolute = os.path.join(folder, *filter(None, path.split('/')))
 

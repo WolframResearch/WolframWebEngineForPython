@@ -47,7 +47,7 @@ def create_session(path=None,
         **opts)
 
 
-def create_view(session, path, cached=False, index='index.m', root=None):
+def create_view(session, path, cached=False, index='index.m', path_extractor = lambda request: request.path):
 
     path = os.path.abspath(os.path.expanduser(path))
 
@@ -62,7 +62,7 @@ def create_view(session, path, cached=False, index='index.m', root=None):
 
         async def view(request):
             loc = get_wl_handler_path_from_folder(
-                path, request.path, index=index, root=root)
+                path, path_extractor(request), index=index)
 
             if not loc:
                 return web.Response(body='Page not found', status=404)
