@@ -44,7 +44,7 @@ class MyAppTestCase(AioHTTPTestCase):
                 session=self.session,
                 path=path,
                 cached=cached,
-                path_extractor = lambda request, l = len(root): request.path[l:],
+                path_extractor=lambda request, l=len(root): request.path[l:],
                 index='index.m')
 
             routes.get(root + '{name:.*}')(view)
@@ -98,10 +98,7 @@ class MyAppTestCase(AioHTTPTestCase):
                 self.assertEqual(
                     (await resp.json())[0:3],
                     ["hello", "from", fmt.upper()])
-                self.assertIsInstance(
-                    (await resp.json())[-1],
-                    int
-                    )
+                self.assertIsInstance((await resp.json())[-1], int)
 
                 self.assertEqual(resp.headers['Content-Type'],
                                  'application/json')
@@ -131,7 +128,8 @@ class MyAppTestCase(AioHTTPTestCase):
             self.assertEqual(
                 first(resp.headers['Content-Type'].split(';')), 'text/html')
 
-            resp = await self.client.request("POST", root + "/form", data={'x': "foobar"})
+            resp = await self.client.request(
+                "POST", root + "/form", data={'x': "foobar"})
 
             self.assertEqual(resp.status, 200)
             self.assertEqual((await resp.json())["x"], "foobar")

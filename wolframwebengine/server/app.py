@@ -47,7 +47,11 @@ def create_session(path=None,
         **opts)
 
 
-def create_view(session, path, cached=False, index='index.m', path_extractor = lambda request: request.path):
+def create_view(session,
+                path,
+                cached=False,
+                index='index.m',
+                path_extractor=lambda request: request.path):
 
     path = os.path.abspath(os.path.expanduser(path))
 
