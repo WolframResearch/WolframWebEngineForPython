@@ -40,6 +40,7 @@ class MyAppTestCase(AioHTTPTestCase):
                                 session=self.session,
                                 path=path,
                                 cached=True,
+                                root = '/cached',
                                 index='index.m')), ):
 
             routes.get(path)(view)
