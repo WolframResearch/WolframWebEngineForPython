@@ -90,26 +90,6 @@ class WolframEngineTestCase(AioHTTPTestCase):
 
             root = cached and '/cached' or '/app'
 
-            for loc, content in (
-                ('', '"Hello from / in a folder!"'),
-                ('/', '"Hello from / in a folder!"'),
-                ('/index.m', '"Hello from / in a folder!"'),
-                ('/foo', '"Hello from foo"'),
-                ('/foo/', '"Hello from foo"'),
-                ('/foo/index.m', '"Hello from foo"'),
-                ('/foo/bar', '"Hello from foo/bar"'),
-                ('/foo/bar', '"Hello from foo/bar"'),
-                ('/foo/bar/index.m', '"Hello from foo/bar"'),
-                ('/foo/bar/something.m', '"Hello from foo/bar/something"'),
-            ):
-                resp = await self.client.request("GET", root + loc)
-                self.assertEqual(resp.status, 200)
-                self.assertEqual(await resp.text(), content)
-
-            for loc in ('/some-random-url', '/404', '/some-/nonsense'):
-                resp = await self.client.request("GET", root + loc)
-                self.assertEqual(resp.status, 404)
-
             resp1 = await self.client.request("GET", root + "/random.m")
             resp2 = await self.client.request("GET", root + "/random.m")
 
@@ -117,19 +97,39 @@ class WolframEngineTestCase(AioHTTPTestCase):
             (cached and self.assertEqual
              or self.assertNotEqual)(await resp1.text(), await resp2.text())
 
-            for fmt in ('wxf', 'mx', 'm', 'wl', 'json'):
+        for loc, content in (
+            ('', '"Hello from / in a folder!"'),
+            ('/', '"Hello from / in a folder!"'),
+            ('/index.m', '"Hello from / in a folder!"'),
+            ('/foo', '"Hello from foo"'),
+            ('/foo/', '"Hello from foo"'),
+            ('/foo/index.m', '"Hello from foo"'),
+            ('/foo/bar', '"Hello from foo/bar"'),
+            ('/foo/bar', '"Hello from foo/bar"'),
+            ('/foo/bar/index.m', '"Hello from foo/bar"'),
+            ('/foo/bar/something.m', '"Hello from foo/bar/something"'),
+        ):
+            resp = await self.client.request("GET", root + loc)
+            self.assertEqual(resp.status, 200)
+            self.assertEqual(await resp.text(), content)
 
-                resp = await self.client.request("GET", root + 'some.' + fmt)
+        for loc in ('/some-random-url', '/404', '/some-/nonsense'):
+            resp = await self.client.request("GET", root + loc)
+            self.assertEqual(resp.status, 404)
 
-                self.assertEqual(resp.status, 200)
-                self.assertEqual(len(await resp.json()), 4)
-                self.assertEqual(
-                    (await resp.json())[0:3],
-                    ["hello", "from", fmt.upper()])
-                self.assertIsInstance((await resp.json())[-1], int)
+        for fmt in ('wxf', 'mx', 'm', 'wl', 'json'):
 
-                self.assertEqual(resp.headers['Content-Type'],
-                                 'application/json')
+            resp = await self.client.request("GET", root + 'some.' + fmt)
+
+            self.assertEqual(resp.status, 200)
+            self.assertEqual(len(await resp.json()), 4)
+            self.assertEqual(
+                (await resp.json())[0:3],
+                ["hello", "from", fmt.upper()])
+            self.assertIsInstance((await resp.json())[-1], int)
+
+            self.assertEqual(resp.headers['Content-Type'],
+                             'application/json')
 
         resp = await self.client.request("GET", "/")
 
