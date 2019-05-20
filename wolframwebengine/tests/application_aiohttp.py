@@ -64,6 +64,7 @@ class MyAppTestCase(AioHTTPTestCase):
 
             for loc, content in (
                 ('', '"Hello from / in a folder!"'),
+                ('/', '"Hello from / in a folder!"'),
                 ('index.m', '"Hello from / in a folder!"'),
                 ('foo', '"Hello from foo"'),
                 ('foo/', '"Hello from foo"'),
