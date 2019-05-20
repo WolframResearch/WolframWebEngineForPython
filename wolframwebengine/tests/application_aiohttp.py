@@ -14,7 +14,8 @@ from wolframwebengine.server.app import create_session, create_view
 from wolframwebengine.web import aiohttp_wl_view
 
 
-class MyAppTestCase(AioHTTPTestCase):
+class WolframEngineTestCase(AioHTTPTestCase):
+    
     async def get_application(self):
 
         self.session = create_session(poolsize=1)
