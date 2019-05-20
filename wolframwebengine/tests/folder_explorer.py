@@ -16,15 +16,16 @@ class TestCase(BaseTestCase):
 
         for path, resolved in (
             ('/', 'index.m'),
+            ('/random.m', 'random.m'),
             ('/foo/bar/', 'foo/bar/index.m'),
             ('/foo/', 'foo/index.m'),
             ('/foo/bar/index.m', 'foo/bar/index.m'),
             ('/foo/bar/something.m', 'foo/bar/something.m'),
-            ):
+        ):
 
             for root in ('/cached', None, ''):
 
                 self.assertEqual(
-                    get_wl_handler_path_from_folder(folder, ((root or '') + path), root = root),
-                    os.path.join(folder, resolved)
-                )
+                    get_wl_handler_path_from_folder(
+                        folder, ((root or '') + path), root=root),
+                    os.path.join(folder, resolved))
