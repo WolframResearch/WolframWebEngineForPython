@@ -98,6 +98,11 @@ class MyAppTestCase(AioHTTPTestCase):
                 self.assertEqual(
                     (await resp.json())[0:3],
                     ["hello", "from", fmt.upper()])
+                self.assertIsInstance(
+                    (await resp.json())[-1],
+                    int
+                    )
+
                 self.assertEqual(resp.headers['Content-Type'],
                                  'application/json')
 
