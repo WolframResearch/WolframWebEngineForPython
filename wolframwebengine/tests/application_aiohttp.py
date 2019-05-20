@@ -65,14 +65,14 @@ class MyAppTestCase(AioHTTPTestCase):
             for loc, content in (
                 ('', '"Hello from / in a folder!"'),
                 ('/', '"Hello from / in a folder!"'),
-                ('index.m', '"Hello from / in a folder!"'),
-                ('foo', '"Hello from foo"'),
-                ('foo/', '"Hello from foo"'),
-                ('foo/index.m', '"Hello from foo"'),
-                ('foo/bar', '"Hello from foo/bar"'),
-                ('foo/bar', '"Hello from foo/bar"'),
-                ('foo/bar/index.m', '"Hello from foo/bar"'),
-                ('foo/bar/something.m', '"Hello from foo/bar/something"'),
+                ('/index.m', '"Hello from / in a folder!"'),
+                ('/foo', '"Hello from foo"'),
+                ('/foo/', '"Hello from foo"'),
+                ('/foo/index.m', '"Hello from foo"'),
+                ('/foo/bar', '"Hello from foo/bar"'),
+                ('/foo/bar', '"Hello from foo/bar"'),
+                ('/foo/bar/index.m', '"Hello from foo/bar"'),
+                ('/foo/bar/something.m', '"Hello from foo/bar/something"'),
             ):
                 resp = await self.client.request("GET", root + loc)
                 self.assertEqual(resp.status, 200)
