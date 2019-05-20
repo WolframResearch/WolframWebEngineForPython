@@ -39,7 +39,7 @@ class MyAppTestCase(AioHTTPTestCase):
         @routes.get('/request/{name:.*}')
         @routes.post('/request/{name:.*}')
         @aiohttp_wl_view(self.session)
-        async def api_view(request):
+        async def request_view(request):
             return wl.Delayed(
                 wl.HTTPRequestData(
                     ["Method", "PathString", "QueryString", "FormRules"]),
