@@ -1,5 +1,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
+import re
+
 from aiohttp import web
 from aiohttp.formdata import FormData
 from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
@@ -35,16 +37,18 @@ class MyAppTestCase(AioHTTPTestCase):
 
         path = module_path('wolframwebengine.tests', 'sampleapp')
 
-        for path, view in (('/cached',
-                            create_view(
-                                session=self.session,
-                                path=path,
-                                cached=True,
-                                root = '/cached',
-                                index='index.m')), ):
+        for cached in (True, False):
 
-            routes.get(path)(view)
-            routes.post(path)(view)
+            root = cached and '/cached' or '/app'
+            view = create_view(
+                session=self.session,
+                path=path,
+                cached=cached,
+                root=root,
+                index='index.m')
+
+            routes.get(root + '{name:.*}')(view)
+            routes.post(root + '{name:.*}')(view)
 
         app = web.Application()
         app.add_routes(routes)
@@ -53,6 +57,50 @@ class MyAppTestCase(AioHTTPTestCase):
 
     @unittest_run_loop
     async def test_aiohttp(self):
+
+        for cached in (True, False):
+
+            root = cached and '/cached' or '/app'
+
+            for loc, content in (
+                ('', '"Hello from / in a folder!"'),
+                ('index.m', '"Hello from / in a folder!"'),
+                ('foo', '"Hello from foo"'),
+                ('foo/', '"Hello from foo"'),
+                ('foo/index.m', '"Hello from foo"'),
+                ('foo/bar', '"Hello from foo/bar"'),
+                ('foo/bar', '"Hello from foo/bar"'),
+                ('foo/bar/index.m', '"Hello from foo/bar"'),
+                ('foo/bar/something.m', '"Hello from foo/bar/something"'),
+            ):
+                resp = await self.client.request("GET", root + loc)
+                self.assertEqual(resp.status, 200)
+                self.assertEqual(await resp.text(), content)
+
+            resp1 = await self.client.request("GET", root + "/random.m")
+            resp2 = await self.client.request("GET", root + "/random.m")
+
+            self.assertTrue(re.match("[0-1].[0-9]+", await resp1.text()))
+            (cached and self.assertEqual
+             or self.assertNotEqual)(await resp1.text(), await resp2.text())
+
+            resp = await self.client.request("GET", root + "/some.json")
+
+            self.assertEqual(resp.status, 200)
+            self.assertEqual(await resp.json(), [1, 2, 3])
+            self.assertEqual(resp.headers['Content-Type'], 'application/json')
+
+            for fmt in ('wxf', 'mx'):
+
+                resp = await self.client.request("GET", root + 'some.' + fmt)
+
+                self.assertEqual(resp.status, 200)
+                self.assertEqual(len(await resp.json()), 4)
+                self.assertEqual(
+                    (await resp.json())[0:3],
+                    ["hello", "from", fmt.upper()])
+                self.assertEqual(resp.headers['Content-Type'],
+                                 'application/json')
 
         resp = await self.client.request("GET", "/")
 
