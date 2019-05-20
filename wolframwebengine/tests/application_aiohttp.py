@@ -41,9 +41,10 @@ class MyAppTestCase(AioHTTPTestCase):
         @aiohttp_wl_view(self.session)
         async def request_view(request):
             return wl.Delayed(
-                wl.HTTPRequestData(
-                    ["Method", "PathString", "QueryString", "FormRules"]),
-                "JSON")
+                wl.HTTPRequestData([
+                    "Method", "Scheme", "Domain", "PathString", "QueryString",
+                    "FormRules"
+                ]), "JSON")
 
         path = module_path('wolframwebengine.tests', 'sampleapp')
 
@@ -81,8 +82,9 @@ class MyAppTestCase(AioHTTPTestCase):
             resp = await self.client.request(method, path, data=data or None)
 
             self.assertEqual(resp.status, 200)
-            self.assertEqual(await resp.json(),
-                             [method, parsed.path, parsed.query, data])
+            self.assertEqual(
+                await resp.json(),
+                [method, 'http', '127.0.0.1', parsed.path, parsed.query, data])
 
         for cached in (True, False):
 
