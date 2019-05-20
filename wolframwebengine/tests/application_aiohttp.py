@@ -1,6 +1,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import re
+from urllib.parse import urlparse
 
 from aiohttp import web
 from aiohttp.formdata import FormData
@@ -35,6 +36,15 @@ class MyAppTestCase(AioHTTPTestCase):
         async def api_view(request):
             return wl.APIFunction({"x": "String"}, wl.Identity, "JSON")
 
+        @routes.get('/request/{name:.*}')
+        @routes.post('/request/{name:.*}')
+        @aiohttp_wl_view(self.session)
+        async def api_view(request):
+            return wl.Delayed(
+                wl.HTTPRequestData(
+                    ["Method", "PathString", "QueryString", "FormRules"]),
+                "JSON")
+
         path = module_path('wolframwebengine.tests', 'sampleapp')
 
         for cached in (True, False):
@@ -57,6 +67,22 @@ class MyAppTestCase(AioHTTPTestCase):
 
     @unittest_run_loop
     async def test_aiohttp(self):
+
+        for method, path, data in (
+            ('GET', '/request/', []),
+            ('GET', '/request/bar/bar?a=2', []),
+            ('POST', '/request/some/random/path', {
+                'a': '2'
+            }),
+        ):
+
+            parsed = urlparse(path)
+
+            resp = await self.client.request(method, path, data=data or None)
+
+            self.assertEqual(resp.status, 200)
+            self.assertEqual(await resp.json(),
+                             [method, parsed.path, parsed.query, data])
 
         for cached in (True, False):
 
