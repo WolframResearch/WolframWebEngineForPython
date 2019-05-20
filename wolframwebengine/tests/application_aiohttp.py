@@ -112,38 +112,40 @@ class MyAppTestCase(AioHTTPTestCase):
         self.assertEqual(resp.status, 200)
         self.assertEqual(await resp.text(), "Hello from aiohttp")
 
-        resp = await self.client.request("GET", "/api")
+        for root in ('/', '/app'):
 
-        self.assertEqual(resp.status, 400)
-        self.assertEqual((await resp.json())["Success"], False)
-        self.assertEqual(resp.headers['Content-Type'], 'application/json')
+            resp = await self.client.request("GET", root + "api")
 
-        resp = await self.client.request("GET", "/api?x=a")
+            self.assertEqual(resp.status, 400)
+            self.assertEqual((await resp.json())["Success"], False)
+            self.assertEqual(resp.headers['Content-Type'], 'application/json')
 
-        self.assertEqual(resp.status, 200)
-        self.assertEqual((await resp.json())["x"], "a")
-        self.assertEqual(resp.headers['Content-Type'], 'application/json')
+            resp = await self.client.request("GET", root + "api?x=a")
 
-        resp = await self.client.request("GET", "/form")
+            self.assertEqual(resp.status, 200)
+            self.assertEqual((await resp.json())["x"], "a")
+            self.assertEqual(resp.headers['Content-Type'], 'application/json')
 
-        self.assertEqual(resp.status, 200)
-        self.assertEqual(
-            first(resp.headers['Content-Type'].split(';')), 'text/html')
+            resp = await self.client.request("GET", root + "form")
 
-        resp = await self.client.request("POST", "/form", data={'x': "foobar"})
+            self.assertEqual(resp.status, 200)
+            self.assertEqual(
+                first(resp.headers['Content-Type'].split(';')), 'text/html')
 
-        self.assertEqual(resp.status, 200)
-        self.assertEqual((await resp.json())["x"], "foobar")
-        self.assertEqual(resp.headers['Content-Type'], 'application/json')
+            resp = await self.client.request("POST", root + "form", data={'x': "foobar"})
 
-        data = FormData()
-        data.add_field('x', b'foobar', filename='somefile.txt')
+            self.assertEqual(resp.status, 200)
+            self.assertEqual((await resp.json())["x"], "foobar")
+            self.assertEqual(resp.headers['Content-Type'], 'application/json')
 
-        resp = await self.client.request("POST", "/form", data=data)
+            data = FormData()
+            data.add_field('x', b'foobar', filename='somefile.txt')
 
-        self.assertEqual(resp.status, 200)
-        self.assertEqual((await resp.json())["x"], "foobar")
-        self.assertEqual(resp.headers['Content-Type'], 'application/json')
+            resp = await self.client.request("POST", root + "form", data=data)
+
+            self.assertEqual(resp.status, 200)
+            self.assertEqual((await resp.json())["x"], "foobar")
+            self.assertEqual(resp.headers['Content-Type'], 'application/json')
 
     def tearDown(self):
         if self.session.started:
