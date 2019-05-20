@@ -78,6 +78,10 @@ class MyAppTestCase(AioHTTPTestCase):
                 self.assertEqual(resp.status, 200)
                 self.assertEqual(await resp.text(), content)
 
+            for loc in ('/some-random-url', '/404', '/some-/nonsense'):
+                resp = await self.client.request("GET", root + loc)
+                self.assertEqual(resp.status, 404)
+
             resp1 = await self.client.request("GET", root + "/random.m")
             resp2 = await self.client.request("GET", root + "/random.m")
 
