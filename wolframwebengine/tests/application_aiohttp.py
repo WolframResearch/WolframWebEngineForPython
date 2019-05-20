@@ -89,13 +89,7 @@ class MyAppTestCase(AioHTTPTestCase):
             (cached and self.assertEqual
              or self.assertNotEqual)(await resp1.text(), await resp2.text())
 
-            resp = await self.client.request("GET", root + "/some.json")
-
-            self.assertEqual(resp.status, 200)
-            self.assertEqual(await resp.json(), [1, 2, 3])
-            self.assertEqual(resp.headers['Content-Type'], 'application/json')
-
-            for fmt in ('wxf', 'mx', 'm', 'wl'):
+            for fmt in ('wxf', 'mx', 'm', 'wl', 'json'):
 
                 resp = await self.client.request("GET", root + 'some.' + fmt)
 
