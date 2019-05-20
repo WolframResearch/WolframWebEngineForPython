@@ -114,7 +114,7 @@ class WolframEngineTestCase(AioHTTPTestCase):
             resp1 = await self.client.request("GET", root + "/random.m")
             resp2 = await self.client.request("GET", root + "/random.m")
 
-            self.assertTrue(re.match("^[0-1].[0-9]*$", await resp1.text()))
+            self.assertTrue(re.match("^[0-1]\.[0-9]*$", await resp1.text()))
             (cached and self.assertEqual
              or self.assertNotEqual)(await resp1.text(), await resp2.text())
 
