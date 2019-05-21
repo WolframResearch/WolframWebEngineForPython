@@ -1,0 +1,1 @@
+APIFunction["x" -> "String", Identity, "JSON"]
