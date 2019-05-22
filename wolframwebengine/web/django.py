@@ -17,17 +17,15 @@ from wolframclient.utils.functional import iterate, first, last
 
 def to_multipart(v):
 
-    raise NotImplementedError(v)
-
     if isinstance(v, six.string_types):
         return {"ContentString": v, "InMemory": True}
 
     destdir = os.path.join(tempfile.gettempdir(), force_text(uuid.uuid4()))
     os.mkdir(destdir)
 
-    with open(os.path.join(destdir, v.filename), "wb") as dest:
-        shutil.copyfileobj(v.file, dest)
-        return {"FileName": dest.name, "InMemory": False, "OriginalFileName": v.filename}
+    with open(os.path.join(destdir, v.name), "wb") as dest:
+        shutil.copyfileobj(v, dest)
+        return {"FileName": dest.name, "InMemory": False, "OriginalFileName": v.name}
 
 
 @to_dict
@@ -41,7 +39,7 @@ def django_request_meta(request):
     yield "Headers", tuple(wl.Rule(k, v) for k, v in request.headers.items())
     yield "MultipartElements", tuple(
         iterate(
-            (wl.Rule(k, v) for k in request.POST.keys() for v in request.POST.getlist(k)),
+            (wl.Rule(k, to_multipart(v)) for k in request.POST.keys() for v in request.POST.getlist(k)),
             (
                 wl.Rule(k, to_multipart(v))
                 for k in request.FILES.keys()
