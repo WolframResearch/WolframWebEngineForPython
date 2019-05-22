@@ -12,28 +12,26 @@ session = WolframEvaluatorPool(poolsize=4)
 routes = web.RouteTableDef()
 
 
-@routes.get('/')
+@routes.get("/")
 async def hello(request):
     return web.Response(text="Hello from aiohttp")
 
 
-@routes.get('/form')
+@routes.get("/form")
 @aiohttp_wl_view(session)
 async def form_view(request):
-    return wl.FormFunction({
-        "x": "String"
-    },
-                           wl.Identity,
-                           AppearanceRules={"Title": "Hello from WL!"})
+    return wl.FormFunction(
+        {"x": "String"}, wl.Identity, AppearanceRules={"Title": "Hello from WL!"}
+    )
 
 
-@routes.get('/api')
+@routes.get("/api")
 @aiohttp_wl_view(session)
 async def api_view(request):
     return wl.APIFunction({"x": "String"}, wl.Identity)
 
 
-@routes.get('/app')
+@routes.get("/app")
 @aiohttp_wl_view(session)
 async def app_view(request):
     return wl.Once(wl.Get("path/to/my/complex/wl/app.wl"))
@@ -42,5 +40,5 @@ async def app_view(request):
 app = web.Application()
 app.add_routes(routes)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     web.run_app(app)

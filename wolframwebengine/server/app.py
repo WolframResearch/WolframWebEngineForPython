@@ -5,18 +5,17 @@ import os
 
 from aiohttp import web
 
-from wolframclient.evaluation import (WolframEvaluatorPool,
-                                      WolframLanguageAsyncSession)
+from wolframclient.evaluation import WolframEvaluatorPool, WolframLanguageAsyncSession
 from wolframclient.language import wl
 from wolframclient.utils.functional import last
 from wolframwebengine.server.explorer import get_wl_handler_path_from_folder
 from wolframwebengine.web import aiohttp_wl_view
 
 EXTENSIONS = {
-    '.wxf': wl.Function(wl.Import(wl.Slot(), 'WXF')),
-    '.mx': wl.Function(wl.Import(wl.Slot(), 'MX')),
-    '.m': wl.Get,
-    '.wl': wl.Get,
+    ".wxf": wl.Function(wl.Import(wl.Slot(), "WXF")),
+    ".mx": wl.Function(wl.Import(wl.Slot(), "MX")),
+    ".m": wl.Get,
+    ".wl": wl.Get,
 }
 
 
@@ -31,27 +30,22 @@ def get_wl_handler(path):
     return EXTENSIONS[last(os.path.splitext(path)).lower()]
 
 
-def create_session(path=None,
-                   poolsize=1,
-                   inputform_string_evaluation=False,
-                   **opts):
+def create_session(path=None, poolsize=1, inputform_string_evaluation=False, **opts):
     if poolsize <= 1:
         return WolframLanguageAsyncSession(
-            path,
-            inputform_string_evaluation=inputform_string_evaluation,
-            **opts)
+            path, inputform_string_evaluation=inputform_string_evaluation, **opts
+        )
     return WolframEvaluatorPool(
         path,
         poolsize=poolsize,
         inputform_string_evaluation=inputform_string_evaluation,
-        **opts)
+        **opts
+    )
 
 
-def create_view(session,
-                path,
-                cached=False,
-                index='index.m',
-                path_extractor=lambda request: request.path):
+def create_view(
+    session, path, cached=False, index="index.m", path_extractor=lambda request: request.path
+):
 
     path = os.path.abspath(os.path.expanduser(path))
 
@@ -65,11 +59,10 @@ def create_view(session,
     if os.path.isdir(path):
 
         async def view(request):
-            loc = get_wl_handler_path_from_folder(
-                path, path_extractor(request), index=index)
+            loc = get_wl_handler_path_from_folder(path, path_extractor(request), index=index)
 
             if not loc:
-                return web.Response(body='Page not found', status=404)
+                return web.Response(body="Page not found", status=404)
 
             if is_wl_code(loc):
                 return await get_code(request, location=loc)
@@ -79,8 +72,10 @@ def create_view(session,
 
     elif os.path.exists(path):
         if not is_wl_code(path):
-            raise ValueError('%s must be one of the following formats: %s' %
-                             (path, ', '.join(EXTENSIONS.keys())))
+            raise ValueError(
+                "%s must be one of the following formats: %s"
+                % (path, ", ".join(EXTENSIONS.keys()))
+            )
         return get_code
     else:
-        raise ValueError('%s is not an existing path on disk.' % path)
+        raise ValueError("%s is not an existing path on disk." % path)

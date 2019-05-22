@@ -7,7 +7,7 @@ from wolframclient.cli.dispatch import DispatchCommand as _DispatchCommand
 
 class DispatchCommand(_DispatchCommand):
 
-    modules = [] + _DispatchCommand.modules + ['wolframwebengine.cli.commands']
+    modules = [] + _DispatchCommand.modules + ["wolframwebengine.cli.commands"]
 
 
 def execute_from_command_line(argv=None, **opts):

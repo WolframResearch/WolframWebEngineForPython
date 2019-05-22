@@ -7,4 +7,4 @@ from wolframclient.cli.commands.refactor import Command as RefactorCommand
 
 class Command(RefactorCommand):
 
-    modules = ['wolframwebengine']
+    modules = ["wolframwebengine"]
