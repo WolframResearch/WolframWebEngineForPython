@@ -2,7 +2,7 @@
 
 from wolframclient.utils.importutils import API
 from functools import partial
-from wolframwebengine.web.utils import is_coroutine
+from wolframwebengine.web.utils import is_coroutine_function
 
 available_backends = API(
     aiohttp="wolframwebengine.web.aiohttp.generate_http_response",
@@ -23,7 +23,8 @@ def generate_http_response(session, backend):
     generator = get_backend(backend)
 
     def outer(func):
-        if is_coroutine(func):
+
+        if is_coroutine_function(func):
 
             async def inner(request, *args, **opts):
                 return await generator(session, request, await func(request, *args, **opts))
