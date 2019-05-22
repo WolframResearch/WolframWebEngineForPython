@@ -7,8 +7,6 @@ from wolframclient.cli.commands.test import Command as TestCommand
 
 class Command(TestCommand):
 
-    modules = ['wolframwebengine.tests']
+    modules = ["wolframwebengine.tests"]
 
-    dependencies = [
-        ("zmq", None),
-    ]
+    dependencies = [("zmq", None)]
