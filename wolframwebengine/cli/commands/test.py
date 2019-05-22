@@ -9,4 +9,4 @@ class Command(TestCommand):
 
     modules = ["wolframwebengine.tests"]
 
-    dependencies = [("zmq", None)]
+    dependencies = [("zmq", None), ("django", "2.2.1")]
