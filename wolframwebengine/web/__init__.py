@@ -2,17 +2,12 @@
 
 from wolframclient.utils.importutils import API
 from functools import partial
-import inspect
+from wolframwebengine.web.utils import is_coroutine
 
 available_backends = API(
     aiohttp="wolframwebengine.web.aiohttp.generate_http_response",
     django="wolframwebengine.web.django.generate_http_response",
 )
-
-if hasattr(inspect, "iscoroutinefunction"):
-    is_coroutine = inspect.iscoroutinefunction
-else:
-    is_coroutine = lambda func: False
 
 
 def get_backend(backend):
