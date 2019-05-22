@@ -13,6 +13,11 @@ from wolframclient.utils.decorators import to_dict
 from wolframclient.utils.encoding import force_text
 from django.http import HttpResponse
 from wolframclient.utils.functional import iterate, first, last
+from wolframwebengine.web.utils import to_multipart as _to_multipart
+from functools import partial
+from operator import attrgetter
+
+to_multipart = partial(_to_multipart, namegetter=attrgetter("name"))
 
 
 def to_multipart(v):
@@ -39,7 +44,11 @@ def django_request_meta(request):
     yield "Headers", tuple(wl.Rule(k, v) for k, v in request.headers.items())
     yield "MultipartElements", tuple(
         iterate(
-            (wl.Rule(k, to_multipart(v)) for k in request.POST.keys() for v in request.POST.getlist(k)),
+            (
+                wl.Rule(k, to_multipart(v))
+                for k in request.POST.keys()
+                for v in request.POST.getlist(k)
+            ),
             (
                 wl.Rule(k, to_multipart(v))
                 for k in request.FILES.keys()
