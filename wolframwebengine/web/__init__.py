@@ -28,7 +28,7 @@ def evaluate_generate_http_response(session, backend, request, expr):
     return get_backend(backend)(session, request, expr)
 
 
-def generate_http_response(backend, session):
+def generate_http_response(session, backend):
     generator = get_backend(backend)
 
     def outer(func):
@@ -47,5 +47,5 @@ def generate_http_response(backend, session):
     return outer
 
 
-aiohttp_wl_view = partial(generate_http_response, "aiohttp")
-django_wl_view = partial(generate_http_response, "django")
+aiohttp_wl_view = partial(generate_http_response, backend="aiohttp")
+django_wl_view = partial(generate_http_response, backend="django")
