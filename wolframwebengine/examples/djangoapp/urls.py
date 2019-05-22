@@ -20,7 +20,7 @@ def form_view(request):
 
 
 @django_wl_view(session)
-async def api_view(request):
+def api_view(request):
     return wl.APIFunction({"x": "String"}, wl.Identity)
 
 
