@@ -14,14 +14,12 @@ def django_view(request):
 
 @django_wl_view(session)
 def form_view(request):
-    return wl.FormFunction(
-        {"x": "String"}, wl.Identity, AppearanceRules={"Title": "Hello from WL!"}
-    )
+    return wl.FormFunction({"x": "String"}, wl.Identity, "JSON")
 
 
 @django_wl_view(session)
 def api_view(request):
-    return wl.APIFunction({"x": "String"}, wl.Identity)
+    return wl.APIFunction({"x": "String"}, wl.Identity, "JSON")
 
 
 urlpatterns = [
