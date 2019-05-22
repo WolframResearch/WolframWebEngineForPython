@@ -24,10 +24,6 @@ def get_backend(backend):
     return available_backends[backend]
 
 
-def evaluate_generate_http_response(session, backend, request, expr):
-    return get_backend(backend)(session, request, expr)
-
-
 def generate_http_response(session, backend):
     generator = get_backend(backend)
 
