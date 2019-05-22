@@ -6,7 +6,6 @@ import time
 from operator import itemgetter
 
 from wolframclient.cli.utils import SimpleCommand
-from wolframclient.evaluation import WolframEvaluatorPool, WolframLanguageAsyncSession
 from wolframclient.serializers import export
 from wolframclient.utils.api import aiohttp
 from wolframclient.utils.asyncio import run_in_loop, wait_all
