@@ -1,0 +1,31 @@
+from django.urls import path
+from django.http import HttpResponse
+
+from wolframclient.language import wl
+from wolframwebengine.server.app import create_session
+from wolframwebengine.web import django_wl_view
+
+session = create_session()
+
+
+def django_view(request):
+    return HttpResponse("hello from django")
+
+
+@django_wl_view(session)
+def form_view(request):
+    return wl.FormFunction(
+        {"x": "String"}, wl.Identity, AppearanceRules={"Title": "Hello from WL!"}
+    )
+
+
+@django_wl_view(session)
+async def api_view(request):
+    return wl.APIFunction({"x": "String"}, wl.Identity)
+
+
+urlpatterns = [
+    path("", django_view, name="home"),
+    path("form", form_view, name="form"),
+    path("api", api_view, name="api"),
+]
