@@ -6,6 +6,7 @@ from wolframclient.utils.tests import TestCase as BaseTestCase
 from django.urls import reverse
 from django.test import Client
 from wolframwebengine.web.utils import auto_wait
+from wolframclient.utils.functional import first
 
 
 class DjangoTestCase(BaseTestCase):
@@ -38,10 +39,12 @@ class DjangoTestCase(BaseTestCase):
         resp = self.client.get(reverse("form"))
 
         self.assertEqual(resp.status_code, 200)
+        self.assertEqual(first(resp["content-type"].split(";")), "text/html")
 
         resp = self.client.get(reverse("api"))
 
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(resp["content-type"], "application/json")
 
     def tearDown(self):
         if self.session.started:
