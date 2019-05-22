@@ -3,9 +3,9 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from wolframclient.utils.tests import TestCase as BaseTestCase
-
 from django.urls import reverse
 from django.test import Client
+from wolframwebengine.web.utils import auto_wait
 
 
 class DjangoTestCase(BaseTestCase):
@@ -13,7 +13,15 @@ class DjangoTestCase(BaseTestCase):
 
         from django.conf import settings
 
-        settings.configure(ROOT_URLCONF="wolframwebengine.examples.djangoapp.urls")
+        settings.configure(
+            ROOT_URLCONF="wolframwebengine.examples.djangoapp.urls",
+            ALLOWED_HOSTS="*",
+            DEBUG=True,
+        )
+
+        import django
+
+        django.setup()
 
         from wolframwebengine.examples.djangoapp.urls import session
 
@@ -37,5 +45,5 @@ class DjangoTestCase(BaseTestCase):
 
     def tearDown(self):
         if self.session.started:
-            self.loop.run_until_complete(self.session.stop())
+            auto_wait(self.session.stop())
         super().tearDown()
