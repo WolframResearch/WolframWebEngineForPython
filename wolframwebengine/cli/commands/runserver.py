@@ -5,7 +5,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 from aiohttp import web
 
 from wolframclient.cli.utils import SimpleCommand
-from wolframclient.evaluation import WolframEvaluatorPool, WolframLanguageAsyncSession
 from wolframclient.utils.api import asyncio
 from wolframwebengine.server.app import create_session, create_view
 
