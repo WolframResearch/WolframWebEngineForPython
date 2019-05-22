@@ -46,7 +46,7 @@ class WolframEngineTestCase(AioHTTPTestCase):
                 "JSON",
             )
 
-        path = module_path("wolframwebengine.tests", "sampleapp")
+        path = module_path("wolframwebengine", "examples", "sampleapp")
 
         for cached in (True, False):
 
