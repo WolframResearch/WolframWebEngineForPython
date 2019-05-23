@@ -1,20 +1,45 @@
 # Wolfram Engine for Python
 
 Wolfram Engine for Python allows you to use a Wolfram Kernel during a web request.
+This cli serves files from the current directory and below, directly mapping the directory structure to HTTP requests.
 
-## Install
+## Installation and Prerequisites
 
-Clone the repository and add it to your python PATH or run:
+### Prerequisites
+
+1. Python 3.5 or higher
+2. Wolfram Language 11.3 or higher
+3. [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython)
+
+### Install Using pip (Recommended)
+Recommended for most users. It installs the latest stable version released by Wolfram Research.
+
+Evaluate the following command in a terminal:
 
 ```
 >>> pip install wolframengineforpython
+```
+
+### Install Using Git
+
+Recommended for developers who want to install the library along with the full source code.
+Clone the library’s repository:
+
+```
+>>> git clone git://github.com/WolframResearch/WolframWebEngineForPython
+```
+
+Install the library in your site-package directory:
+
+```
+>>> pip install .
 ```
 
 Then start the server by doing:
 
 ```
 >>> python3 -m wolframwebengine
-======== Running on http://0.0.0.0:18000 ========
+======== Running on http://localhost:18000 ========
 (Press CTRL+C to quit)
 ```
 
@@ -35,7 +60,7 @@ From the same location run:
 
 ```
 >>> python3 -m wolframwebengine index.m
-======== Running on http://0.0.0.0:18000 ========
+======== Running on http://localhost:18000 ========
 (Press CTRL+C to quit)
 ```
 
@@ -75,7 +100,7 @@ Start the app by running:
 
 ```
 >>> python3 -m wolframwebengine testapp
-======== Running on http://0.0.0.0:18000 ========
+======== Running on http://localhost:18000 ========
 (Press CTRL+C to quit)
 ```
 
@@ -124,7 +149,7 @@ then from CLI Run
 
 ```
 >>> python3 -m wolframwebengine
-======== Running on http://0.0.0.0:18000 ========
+======== Running on http://localhost:18000 ========
 (Press CTRL+C to quit)
 ```
 
@@ -140,7 +165,7 @@ Defaults to index.m
 
 ```
 >>> python3 -m wolframwebengine --index index.wxf
-======== Running on http://0.0.0.0:18000 ========
+======== Running on http://localhost:18000 ========
 (Press CTRL+C to quit)
 ```
 
@@ -151,7 +176,7 @@ If --cached is present then every request will run the source code once
 
 ```
 >>> python3 -m wolframwebengine 'index.m' --cached
-======== Running on http://0.0.0.0:18000 ========
+======== Running on http://localhost:18000 ========
 (Press CTRL+C to quit)
 ```
 
@@ -164,7 +189,7 @@ Allows you to specify the PORT of the webserver. Defaults to 18000.
 
 ```
 >>> python3 -m wolframwebengine --port 8080
-======== Running on http://0.0.0.0:8080 ========
+======== Running on http://localhost:8080 ========
 (Press CTRL+C to quit)
 ```
 
@@ -174,7 +199,7 @@ Allows you to specify the Kernel path
 
 ```
 >>> python3 -m wolframwebengine --kernel '/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
-======== Running on http://0.0.0.0:8080 ========
+======== Running on http://localhost:8080 ========
 (Press CTRL+C to quit)
 ```
 
@@ -184,7 +209,7 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 
 ```
 >>> python3 -m wolframwebengine --poolsize 4
-======== Running on http://0.0.0.0:8080 ========
+======== Running on http://localhost:8080 ========
 (Press CTRL+C to quit)
 ```
 
@@ -207,6 +232,6 @@ You can run the app by doing:
 
 ```
 >>> python3 path/to/wolframwebengineforpython/wolframwebengine/docs/examples/python/aiohttp_application.py
-======== Running on http://0.0.0.0:8080 ========
+======== Running on http://localhost:8080 ========
 (Press CTRL+C to quit)
 ```
