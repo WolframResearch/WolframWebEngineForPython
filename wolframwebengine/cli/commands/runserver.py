@@ -59,23 +59,31 @@ class Command(SimpleCommand):
 
         async def main():
 
-            self.print("Serving content from %s" % path)
-
-            if os.path.isdir(path) and not os.path.exists(os.path.join(path, index)):
-                self.print(
-                    "Warning: The folder %s doesn't contain an %s file, no content will be served for the homepage."
-                    % (path, index)
-                )
-
             view = create_view(session, path, index=index, **opts)
 
             runner = self.ServerRunner(self.Server(view))
             await runner.setup()
             await self.TCPSite(runner, domain, port).start()
 
-            self.print("======= Starting server from http://%s:%s/ ======" % (domain, port))
-            self.print("(Press CTRL+C to quit)")
+            self.print("-" * 70)
+            self.print("Address:    http://%s:%s/" % (domain, port))
+            self.print("Location:   %s" % path)
 
+            if os.path.isdir(path):
+
+                if index:
+                    self.print("Index:      %s" % index)
+
+                if not os.path.exists(os.path.join(path, index)):
+                    self.print("-" * 70)
+                    self.print(
+                        "Warning:    The folder %s doesn't contain an %s file." % (path, index)
+                    )
+                    self.print("            No content will be served for the homepage.")
+            
+            self.print("-" * 70)
+
+            self.print("(Press CTRL+C to quit)")
 
             if not lazy:
                 await session.start()
