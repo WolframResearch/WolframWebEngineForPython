@@ -74,6 +74,8 @@ class Command(SimpleCommand):
             await self.TCPSite(runner, domain, port).start()
 
             self.print("======= Starting server from http://%s:%s/ ======" % (domain, port))
+            self.print("(Press CTRL+C to quit)")
+
 
             if not lazy:
                 await session.start()
