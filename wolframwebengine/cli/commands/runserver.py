@@ -2,9 +2,13 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import os
+import sys
+
 from aiohttp import web
 
 from wolframclient.cli.utils import SimpleCommand
+from wolframclient.exception import WolframKernelException
 from wolframclient.utils.api import asyncio
 from wolframwebengine.server.app import create_session, create_view
 
@@ -19,7 +23,7 @@ class Command(SimpleCommand):
     TCPSite = web.TCPSite
 
     def add_arguments(self, parser):
-        parser.add_argument("path", default=".", nargs="?")
+        parser.add_argument("path", default=".", nargs="?", type=os.path.expanduser)
         parser.add_argument("--port", default=18000, help="Insert the port.")
         parser.add_argument("--domain", default="localhost", help="Insert the domain.")
         parser.add_argument("--kernel", default=None, help="Insert the kernel path.")
@@ -42,18 +46,34 @@ class Command(SimpleCommand):
             "--index", default="index.m", help="The file name to search for folder index."
         )
 
-    def handle(self, domain, port, path, kernel, poolsize, lazy, cached, **opts):
+    def handle(self, domain, port, path, kernel, poolsize, lazy, index, **opts):
 
-        session = create_session(kernel, poolsize=poolsize)
-        view = create_view(session, path, cached=cached, **opts)
+        path = os.path.abspath(os.path.expanduser(path))
+
+        try:
+            session = create_session(kernel, poolsize=poolsize)
+
+        except WolframKernelException as e:
+            self.print(e)
+            sys.exit(1)
 
         async def main():
 
-            self.print("======= Serving on http://%s:%s/ ======" % (domain, port))
+            self.print("Serving content from %s" % path)
+
+            if os.path.isdir(path) and not os.path.exists(os.path.join(path, index)):
+                self.print(
+                    "Warning: The folder %s doesn't contain an %s file, no content will be served for the homepage."
+                    % (path, index)
+                )
+
+            view = create_view(session, path, index=index, **opts)
 
             runner = self.ServerRunner(self.Server(view))
             await runner.setup()
             await self.TCPSite(runner, domain, port).start()
+
+            self.print("======= Starting server from http://%s:%s/ ======" % (domain, port))
 
             if not lazy:
                 await session.start()
