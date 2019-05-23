@@ -67,6 +67,7 @@ class Command(SimpleCommand):
 
             self.print("-" * 70)
             self.print("Address:    http://%s:%s/" % (domain, port))
+            self.print("Kernel:     %s" % session.kernel_controller.kernel)
             self.print("Location:   %s" % path)
 
             if os.path.isdir(path):
