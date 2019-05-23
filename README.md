@@ -3,7 +3,7 @@
 Wolfram Engine for Python allows you to use a Wolfram Kernel during a web request.
 This cli serves files from the current directory and below, directly mapping the directory structure to HTTP requests.
 
-## Installation and Prerequisites
+## Getting Started
 
 ### Prerequisites
 
@@ -35,11 +35,17 @@ Install the library in your site-package directory:
 >>> pip install .
 ```
 
-Then start the server by doing:
+### Start the server
+
+Start the server by doing:
 
 ```
->>> python3 -m wolframwebengine
-======== Running on http://localhost:18000 ========
+>>> python3 -m wolframwebengine        
+----------------------------------------------------------------------
+Address:    http://localhost:18000/
+Location:   /Users/rdv/Desktop
+Index:      index.m
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -60,7 +66,10 @@ From the same location run:
 
 ```
 >>> python3 -m wolframwebengine index.m
-======== Running on http://localhost:18000 ========
+----------------------------------------------------------------------
+Address:    http://localhost:18000/
+Location:   /Users/rdv/Desktop/index.m
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -100,7 +109,11 @@ Start the app by running:
 
 ```
 >>> python3 -m wolframwebengine testapp
-======== Running on http://localhost:18000 ========
+----------------------------------------------------------------------
+Address:    http://localhost:18000/
+Location:   /Users/rdv/Desktop/testapp
+Index:      index.m
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -149,7 +162,11 @@ then from CLI Run
 
 ```
 >>> python3 -m wolframwebengine
-======== Running on http://localhost:18000 ========
+----------------------------------------------------------------------
+Address:    http://localhost:18000/
+Location:   /Users/rdv/Desktop
+Index:      index.m
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -164,8 +181,12 @@ Specify the default file name for folder index.
 Defaults to index.m
 
 ```
->>> python3 -m wolframwebengine --index index.wxf
-======== Running on http://localhost:18000 ========
+python3 -m wolframwebengine --index index.wxf
+----------------------------------------------------------------------
+Address:    http://localhost:18000/
+Location:   /Users/rdv/Desktop
+Index:      index.wxf
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -175,8 +196,12 @@ Defaults to index.m
 If --cached is present then every request will run the source code once
 
 ```
->>> python3 -m wolframwebengine 'index.m' --cached
-======== Running on http://localhost:18000 ========
+>>> python3 -m wolframwebengine --cached          
+----------------------------------------------------------------------
+Address:    http://localhost:18000/
+Location:   /Users/rdv/Desktop
+Index:      index.m
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -189,7 +214,11 @@ Allows you to specify the PORT of the webserver. Defaults to 18000.
 
 ```
 >>> python3 -m wolframwebengine --port 8080
-======== Running on http://localhost:8080 ========
+----------------------------------------------------------------------
+Address:    http://localhost:8080/
+Location:   /Users/rdv/Desktop
+Index:      index.m
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -199,7 +228,11 @@ Allows you to specify the Kernel path
 
 ```
 >>> python3 -m wolframwebengine --kernel '/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
-======== Running on http://localhost:8080 ========
+----------------------------------------------------------------------
+Address:    http://localhost:18000/
+Location:   /Users/rdv/Desktop
+Index:      index.m
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -209,7 +242,11 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 
 ```
 >>> python3 -m wolframwebengine --poolsize 4
-======== Running on http://localhost:8080 ========
+----------------------------------------------------------------------
+Address:    http://localhost:18000/
+Location:   /Users/rdv/Desktop
+Index:      index.m
+----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
 
@@ -231,7 +268,7 @@ A simple example of how to integrate a Wolfram Kernel in your application can be
 You can run the app by doing:
 
 ```
->>> python3 path/to/wolframwebengineforpython/wolframwebengine/docs/examples/python/aiohttp_application.py
+>>> python3 wolframengineforpython/wolframwebengine/examples/aiohttp_application.py 
 ======== Running on http://localhost:8080 ========
 (Press CTRL+C to quit)
 ```
