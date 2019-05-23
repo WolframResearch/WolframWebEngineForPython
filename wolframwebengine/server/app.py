@@ -39,7 +39,7 @@ def create_session(path=None, poolsize=1, inputform_string_evaluation=False, **o
         path,
         poolsize=poolsize,
         inputform_string_evaluation=inputform_string_evaluation,
-        **opts
+        **opts,
     )
 
 
