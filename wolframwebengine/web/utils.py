@@ -2,16 +2,16 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import inspect
 import os
 import shutil
 import tempfile
 import uuid
 
 from wolframclient.utils import six
+from wolframclient.utils.asyncio import get_event_loop
 from wolframclient.utils.encoding import force_text
 from wolframclient.utils.functional import identity
-import inspect
-from wolframclient.utils.asyncio import get_event_loop
 
 is_coroutine_function = getattr(inspect, "iscoroutinefunction", lambda: False)
 is_coroutine = getattr(inspect, "iscoroutine", lambda: False)

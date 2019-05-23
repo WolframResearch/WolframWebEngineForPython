@@ -2,14 +2,16 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from wolframwebengine.web.utils import auto_wait
-from wolframclient.language import wl
-from wolframclient.utils.decorators import to_dict
-from django.http import HttpResponse
-from wolframclient.utils.functional import iterate, first, last
-from wolframwebengine.web.utils import to_multipart as _to_multipart
 from functools import partial
 from operator import attrgetter
+
+from django.http import HttpResponse
+
+from wolframclient.language import wl
+from wolframclient.utils.decorators import to_dict
+from wolframclient.utils.functional import first, iterate, last
+from wolframwebengine.web.utils import auto_wait
+from wolframwebengine.web.utils import to_multipart as _to_multipart
 
 to_multipart = partial(_to_multipart, namegetter=attrgetter("name"))
 

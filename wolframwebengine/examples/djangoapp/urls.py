@@ -1,5 +1,7 @@
-from django.urls import path
+from __future__ import absolute_import, print_function, unicode_literals
+
 from django.http import HttpResponse
+from django.urls import path
 
 from wolframclient.language import wl
 from wolframwebengine.server.app import create_session

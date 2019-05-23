@@ -2,15 +2,14 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+from functools import partial
+from operator import attrgetter
 
 from wolframclient.language import wl
 from wolframclient.utils.api import aiohttp
 from wolframclient.utils.decorators import to_dict
 from wolframclient.utils.encoding import force_text
-
 from wolframwebengine.web.utils import to_multipart as _to_multipart
-from functools import partial
-from operator import attrgetter
 
 to_multipart = partial(
     _to_multipart, namegetter=attrgetter("filename"), filegetter=attrgetter("file")

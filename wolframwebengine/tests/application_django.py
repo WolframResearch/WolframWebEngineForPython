@@ -2,13 +2,13 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from wolframclient.utils.tests import TestCase as BaseTestCase
-from django.test import Client
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import Client
 
-from wolframwebengine.web.utils import auto_wait
-from wolframclient.utils.functional import first
 from wolframclient.utils.api import json
+from wolframclient.utils.functional import first
+from wolframclient.utils.tests import TestCase as BaseTestCase
+from wolframwebengine.web.utils import auto_wait
 
 
 class DjangoTestCase(BaseTestCase):

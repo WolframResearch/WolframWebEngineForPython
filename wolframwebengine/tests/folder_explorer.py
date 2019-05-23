@@ -3,8 +3,8 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
-from wolframclient.utils.importutils import module_path
 
+from wolframclient.utils.importutils import module_path
 from wolframclient.utils.tests import TestCase as BaseTestCase
 from wolframwebengine.server.explorer import get_wl_handler_path_from_folder
 
