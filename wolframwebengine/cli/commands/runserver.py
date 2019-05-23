@@ -23,7 +23,7 @@ class Command(SimpleCommand):
     TCPSite = web.TCPSite
 
     def add_arguments(self, parser):
-        parser.add_argument("path", default=".", nargs="?", type=os.path.expanduser)
+        parser.add_argument("path", default=".", nargs="?")
         parser.add_argument("--port", default=18000, help="Insert the port.")
         parser.add_argument("--domain", default="localhost", help="Insert the domain.")
         parser.add_argument("--kernel", default=None, help="Insert the kernel path.")
