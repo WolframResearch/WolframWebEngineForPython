@@ -14,11 +14,12 @@ from wolframclient.exception import WolframKernelException
 from wolframclient.utils.api import asyncio
 from wolframwebengine.server.app import create_session, create_view
 
-
 class AccessLogger(AbstractAccessLogger):
     def log(self, request, response, time):
-        self.logger.info(f"{request.method} {request.path} done in {time}s: {response.status}")
-
+        self.logger.info(
+            "%s %s done in %.4fs: %s"
+            % (request.method, request.path, time, response.status)
+        )
 
 class Command(SimpleCommand):
     """ Run test suites from the tests modules.
@@ -54,6 +55,12 @@ class Command(SimpleCommand):
             "--index", default="index.m", help="The file name to search for folder index."
         )
 
+    def print_line(self, f = "", s = ""):
+        self.print(f.ljust(15), s)
+
+    def print_separator(self):
+        self.print('-' * 70)
+
     def handle(self, domain, port, path, kernel, poolsize, lazy, index, **opts):
 
         path = os.path.abspath(os.path.expanduser(path))
@@ -73,26 +80,31 @@ class Command(SimpleCommand):
             await runner.setup()
             await self.TCPSite(runner, domain, port).start()
 
-            self.print("-" * 70)
-            self.print("Address:    http://%s:%s/" % (domain, port))
-            self.print("Kernel:     %s" % session.kernel_controller.kernel)
-            self.print("Location:   %s" % path)
+            self.print_separator()
+
+            for args in (
+                ("Addess", "http://%s:%s/" % (domain, port)),
+                ("Kernel", session.kernel_controller.kernel),
+                ("Location", path),
+                ):
+                self.print_line(*args)
 
             if os.path.isdir(path):
 
                 if index:
-                    self.print("Index:      %s" % index)
+                    self.print_line("Index", index)
 
                 if not os.path.exists(os.path.join(path, index)):
-                    self.print("-" * 70)
-                    self.print(
-                        "Warning:    The folder %s doesn't contain an %s file." % (path, index)
+                    self.print_separator()
+                    self.print_line(
+                        "Warning", "The folder %s doesn't contain an %s file." % (path, index)
                     )
-                    self.print("            No content will be served for the homepage.")
+                    self.print_line("", "No content will be served for the homepage.")
 
-            self.print("-" * 70)
+            self.print_separator()
 
-            self.print("(Press CTRL+C to quit)")
+            self.print_line("(Press CTRL+C to quit)")
+            self.print_line()
 
             logging.basicConfig(level=logging.INFO, format="%(message)s")
 
@@ -106,7 +118,8 @@ class Command(SimpleCommand):
         try:
             loop.run_until_complete(main())
         except KeyboardInterrupt:
-            self.print("Requested server shutdown, closing session...")
-            loop.run_until_complete(session.stop())
+            if session.started:
+                self.print("Requested server shutdown, closing session...")
+                loop.run_until_complete(session.stop())
 
         loop.close()
