@@ -2,28 +2,18 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-import os
-import shutil
-import tempfile
-import uuid
+from functools import partial
+from operator import attrgetter
 
 from wolframclient.language import wl
-from wolframclient.utils import six
 from wolframclient.utils.api import aiohttp
 from wolframclient.utils.decorators import to_dict
 from wolframclient.utils.encoding import force_text
+from wolframwebengine.web.utils import to_multipart as _to_multipart
 
-
-def to_multipart(v):
-    if isinstance(v, six.string_types):
-        return {"ContentString": v, "InMemory": True}
-
-    destdir = os.path.join(tempfile.gettempdir(), force_text(uuid.uuid4()))
-    os.mkdir(destdir)
-
-    with open(os.path.join(destdir, v.filename), "wb") as dest:
-        shutil.copyfileobj(v.file, dest)
-        return {"FileName": dest.name, "InMemory": False, "OriginalFileName": v.filename}
+to_multipart = partial(
+    _to_multipart, namegetter=attrgetter("filename"), filegetter=attrgetter("file")
+)
 
 
 @to_dict

@@ -11,6 +11,7 @@ from wolframclient.utils.functional import first
 from wolframclient.utils.importutils import module_path
 from wolframwebengine.server.app import create_session, create_view
 from wolframwebengine.web import aiohttp_wl_view
+from wolframwebengine.web.utils import auto_wait
 
 
 class WolframEngineTestCase(AioHTTPTestCase):
@@ -46,7 +47,7 @@ class WolframEngineTestCase(AioHTTPTestCase):
                 "JSON",
             )
 
-        path = module_path("wolframwebengine.tests", "sampleapp")
+        path = module_path("wolframwebengine", "examples", "sampleapp")
 
         for cached in (True, False):
 
@@ -170,5 +171,5 @@ class WolframEngineTestCase(AioHTTPTestCase):
 
     def tearDown(self):
         if self.session.started:
-            self.loop.run_until_complete(self.session.stop())
+            auto_wait(self.session.stop(), loop=self.loop)
         super().tearDown()

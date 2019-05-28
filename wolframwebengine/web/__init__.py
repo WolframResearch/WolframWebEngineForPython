@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from wolframclient.utils.importutils import API
+from __future__ import absolute_import, print_function, unicode_literals
+
 from functools import partial
-import inspect
+
+from wolframclient.utils.importutils import API
+from wolframwebengine.web.utils import is_coroutine_function
 
 available_backends = API(
     aiohttp="wolframwebengine.web.aiohttp.generate_http_response",
     django="wolframwebengine.web.django.generate_http_response",
 )
-
-if hasattr(inspect, "iscoroutinefunction"):
-    is_coroutine = inspect.iscoroutinefunction
-else:
-    is_coroutine = lambda func: False
 
 
 def get_backend(backend):
@@ -24,15 +22,12 @@ def get_backend(backend):
     return available_backends[backend]
 
 
-def evaluate_generate_http_response(session, backend, request, expr):
-    return get_backend(backend)(session, request, expr)
-
-
-def generate_http_response(backend, session):
+def generate_http_response(session, backend):
     generator = get_backend(backend)
 
     def outer(func):
-        if is_coroutine(func):
+
+        if is_coroutine_function(func):
 
             async def inner(request, *args, **opts):
                 return await generator(session, request, await func(request, *args, **opts))
@@ -47,5 +42,5 @@ def generate_http_response(backend, session):
     return outer
 
 
-aiohttp_wl_view = partial(generate_http_response, "aiohttp")
-django_wl_view = partial(generate_http_response, "django")
+aiohttp_wl_view = partial(generate_http_response, backend="aiohttp")
+django_wl_view = partial(generate_http_response, backend="django")
