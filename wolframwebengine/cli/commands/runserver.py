@@ -2,15 +2,22 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
 import os
 import sys
 
 from aiohttp import web
+from aiohttp.abc import AbstractAccessLogger
 
 from wolframclient.cli.utils import SimpleCommand
 from wolframclient.exception import WolframKernelException
 from wolframclient.utils.api import asyncio
 from wolframwebengine.server.app import create_session, create_view
+
+
+class AccessLogger(AbstractAccessLogger):
+    def log(self, request, response, time):
+        self.logger.info(f"{request.method} {request.path} done in {time}s: {response.status}")
 
 
 class Command(SimpleCommand):
@@ -21,6 +28,7 @@ class Command(SimpleCommand):
     ServerRunner = web.ServerRunner
     Server = web.Server
     TCPSite = web.TCPSite
+    AccessLogger = AccessLogger
 
     def add_arguments(self, parser):
         parser.add_argument("path", default=".", nargs="?")
@@ -61,7 +69,7 @@ class Command(SimpleCommand):
 
             view = create_view(session, path, index=index, **opts)
 
-            runner = self.ServerRunner(self.Server(view))
+            runner = self.ServerRunner(self.Server(view, access_log_class=self.AccessLogger))
             await runner.setup()
             await self.TCPSite(runner, domain, port).start()
 
@@ -81,10 +89,12 @@ class Command(SimpleCommand):
                         "Warning:    The folder %s doesn't contain an %s file." % (path, index)
                     )
                     self.print("            No content will be served for the homepage.")
-            
+
             self.print("-" * 70)
 
             self.print("(Press CTRL+C to quit)")
+
+            logging.basicConfig(level=logging.INFO, format="%(message)s")
 
             if not lazy:
                 await session.start()
