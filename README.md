@@ -42,10 +42,10 @@ Install the library in your site-package directory:
 Start the server by doing:
 
 ```
-python3 -m wolframwebengine    
+python3 -m wolframwebengine --demo
 ----------------------------------------------------------------------
 Addess          http://localhost:18000/
-Folder          /Users/rdv/Desktop
+Folder          /Users/rdv/Desktop/wolframengineforpython/wolframwebengine/examples/demoapp
 Index           index.m
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
