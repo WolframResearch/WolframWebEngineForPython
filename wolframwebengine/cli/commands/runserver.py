@@ -83,14 +83,15 @@ class Command(SimpleCommand):
 
             self.print_separator()
 
+            isdir = os.path.isdir(path)
+
             for args in (
                 ("Addess", "http://%s:%s/" % (domain, port)),
-                ("Kernel", session.kernel_controller.kernel),
-                ("Location", path),
+                (isdir and "Folder" or "File", path),
                 ):
                 self.print_line(*args)
 
-            if os.path.isdir(path):
+            if isdir:
 
                 if index:
                     self.print_line("Index", index)
