@@ -12,14 +12,16 @@ from aiohttp.abc import AbstractAccessLogger
 from wolframclient.cli.utils import SimpleCommand
 from wolframclient.exception import WolframKernelException
 from wolframclient.utils.api import asyncio
+from wolframclient.utils.importutils import module_path
 from wolframwebengine.server.app import create_session, create_view
+
 
 class AccessLogger(AbstractAccessLogger):
     def log(self, request, response, time):
         self.logger.info(
-            "%s %s done in %.4fs: %s"
-            % (request.method, request.path, time, response.status)
+            "%s %s done in %.4fs: %s" % (request.method, request.path, time, response.status)
         )
+
 
 class Command(SimpleCommand):
     """ Run test suites from the tests modules.
@@ -55,13 +57,18 @@ class Command(SimpleCommand):
             "--index", default="index.m", help="The file name to search for folder index."
         )
 
-    def print_line(self, f = "", s = ""):
+        parser.add_argument("--demo", action="store_true", help="Run the demo application")
+
+    def print_line(self, f="", s=""):
         self.print(f.ljust(15), s)
 
     def print_separator(self):
-        self.print('-' * 70)
+        self.print("-" * 70)
 
-    def handle(self, domain, port, path, kernel, poolsize, lazy, index, **opts):
+    def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, **opts):
+
+        if demo:
+            path = module_path("wolframwebengine", "examples", "demoapp")
 
         path = os.path.abspath(os.path.expanduser(path))
 
@@ -70,7 +77,7 @@ class Command(SimpleCommand):
 
         except WolframKernelException as e:
             self.print(e)
-            self.print('Use --help to display all available options.')
+            self.print("Use --help to display all available options.")
             sys.exit(1)
 
         async def main():
@@ -88,7 +95,7 @@ class Command(SimpleCommand):
             for args in (
                 ("Addess", "http://%s:%s/" % (domain, port)),
                 (isdir and "Folder" or "File", path),
-                ):
+            ):
                 self.print_line(*args)
 
             if isdir:
