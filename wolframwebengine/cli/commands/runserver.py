@@ -70,6 +70,7 @@ class Command(SimpleCommand):
 
         except WolframKernelException as e:
             self.print(e)
+            self.print('Use --help to display all available options.')
             sys.exit(1)
 
         async def main():
