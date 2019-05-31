@@ -41,13 +41,13 @@ Install the library in your site-package directory:
 Start the server by doing:
 
 ```
->>> python3 -m wolframwebengine        
+python3 -m wolframwebengine    
 ----------------------------------------------------------------------
-Address:    http://localhost:18000/
-Location:   /Users/rdv/Desktop
-Index:      index.m
+Addess          http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.m
 ----------------------------------------------------------------------
-(Press CTRL+C to quit)
+(Press CTRL+C to quit) 
 ```
 
 That should be it!
@@ -68,10 +68,10 @@ From the same location run:
 ```
 >>> python3 -m wolframwebengine index.m
 ----------------------------------------------------------------------
-Address:    http://localhost:18000/
-Location:   /Users/rdv/Desktop/index.m
+Addess          http://localhost:18000/
+File            /Users/rdv/Desktop/index.m
 ----------------------------------------------------------------------
-(Press CTRL+C to quit)
+(Press CTRL+C to quit) 
 ```
 
 Then try to open the following urls in your browser:
@@ -111,11 +111,11 @@ Start the app by running:
 ```
 >>> python3 -m wolframwebengine testapp
 ----------------------------------------------------------------------
-Address:    http://localhost:18000/
-Location:   /Users/rdv/Desktop/testapp
-Index:      index.m
+Addess          http://localhost:18000/
+Folder          /Users/rdv/Desktop/testapp
+Index           index.m
 ----------------------------------------------------------------------
-(Press CTRL+C to quit)
+(Press CTRL+C to quit) 
 ```
 
 Then open the browser at the following locations:
@@ -130,11 +130,9 @@ http://localhost:18000/static.json
 
 ```
 >>> python3 -m wolframwebengine --help
-usage: wolframwebengine.cli.commands.runserver.Command [-h] [--port PORT]
-                                                       [--kernel KERNEL]
-                                                       [--poolsize POOLSIZE]
-                                                       [--cached] [--lazy]
-                                                       [path]
+usage: __main__.py [-h] [--port PORT] [--domain DOMAIN] [--kernel KERNEL]
+                   [--poolsize POOLSIZE] [--cached] [--lazy] [--index INDEX]
+                   [path]
 
 positional arguments:
   path
@@ -142,11 +140,12 @@ positional arguments:
 optional arguments:
   -h, --help           show this help message and exit
   --port PORT          Insert the port.
+  --domain DOMAIN      Insert the domain.
   --kernel KERNEL      Insert the kernel path.
   --poolsize POOLSIZE  Insert the kernel pool size.
   --cached             The server will cache the WL input expression.
   --lazy               The server will start the kernels on the first request.
-  --index              The file name to search for folder index.
+  --index INDEX        The file name to search for folder index.
 ```
 
 #### path
@@ -164,11 +163,11 @@ then from CLI Run
 ```
 >>> python3 -m wolframwebengine
 ----------------------------------------------------------------------
-Address:    http://localhost:18000/
-Location:   /Users/rdv/Desktop
-Index:      index.m
+Addess          http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.m
 ----------------------------------------------------------------------
-(Press CTRL+C to quit)
+(Press CTRL+C to quit) 
 ```
 
 If the first argument is a file, all request path will be routed to the same expression.
@@ -184,11 +183,11 @@ Defaults to index.m
 ```
 python3 -m wolframwebengine --index index.wxf
 ----------------------------------------------------------------------
-Address:    http://localhost:18000/
-Location:   /Users/rdv/Desktop
-Index:      index.wxf
+Addess          http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.wxf
 ----------------------------------------------------------------------
-(Press CTRL+C to quit)
+(Press CTRL+C to quit) 
 ```
 
 
@@ -197,13 +196,13 @@ Index:      index.wxf
 If --cached is present then every request will run the source code once
 
 ```
->>> python3 -m wolframwebengine --cached          
+>>> python3 -m wolframwebengine --cached
 ----------------------------------------------------------------------
-Address:    http://localhost:18000/
-Location:   /Users/rdv/Desktop
-Index:      index.m
+Addess          http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.m
 ----------------------------------------------------------------------
-(Press CTRL+C to quit)
+(Press CTRL+C to quit) 
 ```
 
 Visit the browser and refresh the page.
@@ -214,13 +213,13 @@ Visit the browser and refresh the page.
 Allows you to specify the PORT of the webserver. Defaults to 18000.
 
 ```
->>> python3 -m wolframwebengine --port 8080
+>>> python3 -m wolframwebengine --port 9090
 ----------------------------------------------------------------------
-Address:    http://localhost:8080/
-Location:   /Users/rdv/Desktop
-Index:      index.m
+Addess          http://localhost:9090/
+Folder          /Users/rdv/Desktop
+Index           index.m
 ----------------------------------------------------------------------
-(Press CTRL+C to quit)
+(Press CTRL+C to quit) 
 ```
 
 #### --kernel KERNEL
@@ -228,13 +227,13 @@ Index:      index.m
 Allows you to specify the Kernel path
 
 ```
->>> python3 -m wolframwebengine --kernel '/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+>>> python3 -m wolframwebengine --kernel '/Applications/Mathematica11.3.app/Contents/MacOS/WolframKernel'
 ----------------------------------------------------------------------
-Address:    http://localhost:18000/
-Location:   /Users/rdv/Desktop
-Index:      index.m
+Addess          http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.m
 ----------------------------------------------------------------------
-(Press CTRL+C to quit)
+(Press CTRL+C to quit) 
 ```
 
 #### --poolsize SIZE
@@ -244,9 +243,9 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 ```
 >>> python3 -m wolframwebengine --poolsize 4
 ----------------------------------------------------------------------
-Address:    http://localhost:18000/
-Location:   /Users/rdv/Desktop
-Index:      index.m
+Addess          http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.m
 ----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```
