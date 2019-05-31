@@ -18,7 +18,7 @@ Recommended for most users. It installs the latest stable version released by Wo
 Evaluate the following command in a terminal:
 
 ```
->>> pip install wolframengineforpython
+>>> pip3 install wolframengineforpython
 ```
 
 ### Install Using Git
@@ -33,7 +33,8 @@ Clone the library’s repository:
 Install the library in your site-package directory:
 
 ```
->>> pip install .
+>>> cd WolframWebEngineForPython
+>>> pip3 install .
 ```
 
 ### Start the server
@@ -41,10 +42,10 @@ Install the library in your site-package directory:
 Start the server by doing:
 
 ```
-python3 -m wolframwebengine    
+python3 -m wolframwebengine --demo
 ----------------------------------------------------------------------
 Addess          http://localhost:18000/
-Folder          /Users/rdv/Desktop
+Folder          /Users/rdv/Desktop/wolframengineforpython/wolframwebengine/examples/demoapp
 Index           index.m
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
