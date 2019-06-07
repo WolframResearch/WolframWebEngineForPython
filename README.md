@@ -53,7 +53,7 @@ Index           index.m
 
 Now you can open your web browser at the address http://localhost:18000/
 
-![image](docs/assets/image.jpg)
+![image](https://stash.wolfram.com/projects/LCL/repos/wolframengineforpython/raw/docs/assets/image1.png?at=refs%2Fheads%2Ffeature%2Fdocs)
 
 
 ## Single file applications
