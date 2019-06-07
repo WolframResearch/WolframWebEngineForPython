@@ -93,7 +93,7 @@ class Command(SimpleCommand):
             isdir = os.path.isdir(path)
 
             for args in (
-                ("Addess", "http://%s:%s/" % (domain, port)),
+                ("Address", "http://%s:%s/" % (domain, port)),
                 (isdir and "Folder" or "File", path),
             ):
                 self.print_line(*args)
