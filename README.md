@@ -37,9 +37,9 @@ Install the library in your site-package directory:
 >>> pip3 install .
 ```
 
-### Start the demo server
+### Start a demo server
 
-Start the demo server by doing:
+Start a demo server by doing:
 
 ```
 python3 -m wolframwebengine --demo
@@ -55,30 +55,39 @@ Now you can open your web browser at the address http://localhost:18000/
 
 ![image](https://stash.wolfram.com/projects/LCL/repos/wolframengineforpython/raw/docs/assets/image1.png?at=refs%2Fheads%2Ffeature%2Fdocs)
 
+## Two different ways of structuring an application:
 
-## Single file applications
+1. Use a single file with URLDispatcher
+2. Use multiple files in a directory layout
 
-Writing an application using a single file.
+## Single file with URLDispatcher
 
-Create a folder named myapp.
-Write the following content on a file by running:
+One way to run your server is to direct all requests to a single file
+that runs a Wolfram Language [URLDispatcher](https://reference.wolfram.com/language/ref/URLDispatcher.html) function.
+
+Write the following content in a file called `dispatcher.m`:
 
 ```
->>> echo 'URLDispatcher[{"/api" -> APIFunction["x" -> "String"], "/form" -> FormFunction["x" -> "String"], "/" -> "hello world!"}]' >  index.m
+URLDispatcher[{
+    "/api" -> APIFunction["x" -> "String"], 
+    "/form" -> FormFunction["x" -> "String"], 
+    "/" -> "hello world!"
+}]
 ```
 
 From the same location run:
 
 ```
->>> python3 -m wolframwebengine index.m
+>>> python3 -m wolframwebengine dispatcher.m
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
-File            /Users/rdv/Desktop/index.m
+Address         http://localhost:18000/
+File            /Users/rdv/Desktop/dispatcher.m
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
 ```
 
-Then try to open the following urls in your browser:
+All incoming requests will now be routed to the `URLDispatcher` function in `dispatcher.m`.
+You can now open the following urls in your browser:
 
 ```
 http://localhost:18000/
@@ -86,17 +95,17 @@ http://localhost:18000/form
 http://localhost:18000/api
 ```
 
-For more information about single file applications please read the documentation of [URLDispatcher](https://reference.wolfram.com/language/ref/URLDispatcher.html).
+For more information about `URLDispatcher` please refer to the [online documentation](https://reference.wolfram.com/language/ref/URLDispatcher.html).
 
-## Multi file applications
+## Multiple files in a directory layout
 
-WolframWebEngine for python allows you to write an application by creating a folder structure that is served by the server.
+Another way to write an application is to create a directory structure that is served by the server. The url for each file will match the file's directory path.
 
 The server will serve content with the following rules:
 
-1. All files with extensions '.m', '.mx', '.wxf', '.wl' will be evaluated in the Kernel using [GenerateHTTPResponse](https://reference.wolfram.com/language/ref/GenerateHTTPResponse.html) over the result.
+1. All files with extensions '.m', '.mx', '.wxf', '.wl' will be evaluated in the Kernel using [GenerateHTTPResponse](https://reference.wolfram.com/language/ref/GenerateHTTPResponse.html) on the content of the file.
 2. Any other file will be served as static content.
-3. If the request path corrispond to a folder on disk, the server will search for a file named index.m in the same folder, this convention can be changed with the --index option.
+3. If the request path corresponds to a directory on disk, the server will search for a file named index.m in that directory. This convention can be changed with the --index option.
 
 Create an application by running the following code in your current location:
 
@@ -107,10 +116,11 @@ mkdir testapp/api
 echo 'ExportForm[{"hello", UnixTime[]}, "JSON"]' >  testapp/index.m
 echo 'FormFunction["x" -> "String"]'             >  testapp/form/index.m
 echo 'APIFunction["x" -> "String"]'              >  testapp/api/index.m
+echo 'HTTPResponse["hello world"]'               >  testapp/api/response.m
 echo '["some", "static", "JSON"]'                >  testapp/static.json
 ```
 
-Start the app by running:
+Start the application by running:
 
 ```
 >>> python3 -m wolframwebengine testapp
@@ -123,12 +133,16 @@ Index           index.m
 ```
 
 Then open the browser at the following locations:
+
 ```
 http://localhost:18000/
 http://localhost:18000/form
 http://localhost:18000/api
 http://localhost:18000/static.json
 ```
+
+One advantage of a multi-file application structure is that is very easy to extend the application. You can simply place new files into the appropriate location in your application directory and they will automatically be served.
+
 
 ### Options
 
@@ -178,6 +192,17 @@ If the first argument is a file, all request path will be routed to the same exp
 If the first argument is a folder, requests will be redirected to the kernel if the url extension ends with '.m', '.mx', '.wxf', '.wl'.
 
 If the request path is a folder the server will search for an index.m in the same folder.
+
+```
+>>> python3 -m wolframwebengine
+----------------------------------------------------------------------
+Address          http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.m
+----------------------------------------------------------------------
+(Press CTRL+C to quit) 
+```
+
 
 #### --index
 
@@ -254,25 +279,6 @@ Index           index.m
 (Press CTRL+C to quit)
 ```
 
-
 #### --lazy 
 
 If the option is present the server will wait for the first request to spawn the kernels, instead of spawning them immediately.
-
-## Embedded Version
-
-Wolfram Web Engine for Python provides bindings for popular frameworks and allows you to write a new one easily.
-
-### Bindings for AIOHTTP
-
-A simple example of how to integrate a Wolfram Kernel in your application can be found here:
-
-[aiohttp_application.py](https://stash.wolfram.com/projects/LCL/repos/wolframwebengineforpython/browse/wolframwebengine/docs/examples/python/aiohttp_application.py)
-
-You can run the app by doing:
-
-```
->>> python3 wolframengineforpython/wolframwebengine/examples/aiohttp_application.py 
-======== Running on http://localhost:8080 ========
-(Press CTRL+C to quit)
-```
