@@ -47,5 +47,10 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Topic :: Software Development :: Libraries :: Wolfram Engine Library"
-    ]
+    ],
+    entry_points={
+        'console_scripts': [
+            'wolframwebengine = wolframwebengine.__main__:main',
+        ]
+    }
 )
