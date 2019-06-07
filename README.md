@@ -1,6 +1,6 @@
-# Wolfram Engine for Python
+# Wolfram Web Engine for Python
 
-Wolfram Engine for Python allows you to use a Wolfram Kernel during a web request.
+Wolfram Web Engine for Python allows you to use a Wolfram Kernel during a web request.
 
 This cli serves files from the current directory and below, directly mapping the directory structure to HTTP requests.
 
@@ -44,7 +44,7 @@ Start the server by doing:
 ```
 python3 -m wolframwebengine --demo
 ----------------------------------------------------------------------
-Addess          http://localhost:18000/
+Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop/wolframengineforpython/wolframwebengine/examples/demoapp
 Index           index.m
 ----------------------------------------------------------------------
@@ -69,7 +69,7 @@ From the same location run:
 ```
 >>> python3 -m wolframwebengine index.m
 ----------------------------------------------------------------------
-Addess          http://localhost:18000/
+Address          http://localhost:18000/
 File            /Users/rdv/Desktop/index.m
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
@@ -112,7 +112,7 @@ Start the app by running:
 ```
 >>> python3 -m wolframwebengine testapp
 ----------------------------------------------------------------------
-Addess          http://localhost:18000/
+Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop/testapp
 Index           index.m
 ----------------------------------------------------------------------
@@ -164,7 +164,7 @@ then from CLI Run
 ```
 >>> python3 -m wolframwebengine
 ----------------------------------------------------------------------
-Addess          http://localhost:18000/
+Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.m
 ----------------------------------------------------------------------
@@ -184,7 +184,7 @@ Defaults to index.m
 ```
 python3 -m wolframwebengine --index index.wxf
 ----------------------------------------------------------------------
-Addess          http://localhost:18000/
+Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.wxf
 ----------------------------------------------------------------------
@@ -199,7 +199,7 @@ If --cached is present then every request will run the source code once
 ```
 >>> python3 -m wolframwebengine --cached
 ----------------------------------------------------------------------
-Addess          http://localhost:18000/
+Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.m
 ----------------------------------------------------------------------
@@ -216,7 +216,7 @@ Allows you to specify the PORT of the webserver. Defaults to 18000.
 ```
 >>> python3 -m wolframwebengine --port 9090
 ----------------------------------------------------------------------
-Addess          http://localhost:9090/
+Address          http://localhost:9090/
 Folder          /Users/rdv/Desktop
 Index           index.m
 ----------------------------------------------------------------------
@@ -230,7 +230,7 @@ Allows you to specify the Kernel path
 ```
 >>> python3 -m wolframwebengine --kernel '/Applications/Mathematica11.3.app/Contents/MacOS/WolframKernel'
 ----------------------------------------------------------------------
-Addess          http://localhost:18000/
+Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.m
 ----------------------------------------------------------------------
@@ -244,7 +244,7 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 ```
 >>> python3 -m wolframwebengine --poolsize 4
 ----------------------------------------------------------------------
-Addess          http://localhost:18000/
+Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.m
 ----------------------------------------------------------------------
@@ -258,7 +258,7 @@ If the option is present the server will wait for the first request to spawn the
 
 ## Embedded Version
 
-Wolfram Engine for Python provides bindings for popular frameworks and allows you to write a new one easily.
+Wolfram Web Engine for Python provides bindings for popular frameworks and allows you to write a new one easily.
 
 ### Bindings for AIOHTTP
 

@@ -46,6 +46,6 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Topic :: Software Development :: Libraries :: Wolfram Engine Library"
+        "Topic :: Software Development :: Libraries :: Wolfram Web Engine Library"
     ]
 )
