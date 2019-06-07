@@ -37,9 +37,9 @@ Install the library in your site-package directory:
 >>> pip3 install .
 ```
 
-### Start the server
+### Start the demo server
 
-Start the server by doing:
+Start the demo server by doing:
 
 ```
 python3 -m wolframwebengine --demo
@@ -51,7 +51,10 @@ Index           index.m
 (Press CTRL+C to quit) 
 ```
 
-That should be it!
+Now you can open your web browser at the address http://localhost:18000/
+
+![image](docs/assets/image.jpg)
+
 
 ## Single file applications
 
