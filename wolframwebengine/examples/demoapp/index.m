@@ -3,7 +3,7 @@ FormFunction[
     ImageEffect[#image, #filter] &,
     "PNG",
     AppearanceRules -> <|
-        "Title" -> "Welcome to WolframWebEngine",
+        "Title" -> "Welcome to Wolfram Web Engine",
         "Description" -> TemplateApply["This is a sample application running on a `` Kernel.", $VersionNumber]
     |>
 ]
