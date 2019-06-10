@@ -282,3 +282,99 @@ Index           index.wl
 #### --lazy 
 
 If the option is present the server will wait for the first request to spawn the kernels, instead of spawning them immediately.
+
+
+## Integrating an existing application
+
+Wolfram Web Engine for Python can be used to augment an existing python application instead of creating a new one.
+We currently support the following frameworks:
+
+### Django
+
+If you have an existing [Django](!https://www.djangoproject.com/) application you can use the `django_wl_view` decorator to evaluate Wolfram Language code during a web request.
+
+```python
+
+from __future__ import absolute_import, print_function, unicode_literals
+
+from django.http import HttpResponse
+from django.urls import path
+
+from wolframclient.language import wl
+from wolframclient.evaluation import WolframLanguageSession
+from wolframwebengine.web import django_wl_view
+
+session = WolframLanguageSession()
+
+def django_view(request):
+    return HttpResponse("hello from django")
+
+@django_wl_view(session)
+def form_view(request):
+    return wl.FormFunction({"x": "String"}, wl.Identity, "JSON")
+
+
+@django_wl_view(session)
+def api_view(request):
+    return wl.APIFunction({"x": "String"}, wl.Identity, "JSON")
+
+
+urlpatterns = [
+    path("", django_view, name="home"),
+    path("form", form_view, name="form"),
+    path("api", api_view, name="api"),
+]
+```
+
+The decorator can be used with any kind of evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
+
+### Aiohttp
+
+If you have an existing [Aiohttp](!https://docs.aiohttp.org/en/stable/web_reference.html) server running you can use the `aiohttp_wl_view` decorator to evaluate Wolfram Language code during a web request.
+
+```python
+
+from aiohttp import web
+
+from wolframclient.evaluation import WolframEvaluatorPool
+from wolframclient.language import wl
+from wolframwebengine.web import aiohttp_wl_view
+
+session = WolframEvaluatorPool(poolsize=4)
+routes = web.RouteTableDef()
+
+
+@routes.get("/")
+async def hello(request):
+    return web.Response(text="Hello from aiohttp")
+
+
+@routes.get("/form")
+@aiohttp_wl_view(session)
+async def form_view(request):
+    return wl.FormFunction(
+        {"x": "String"}, wl.Identity, AppearanceRules={"Title": "Hello from WL!"}
+    )
+
+
+@routes.get("/api")
+@aiohttp_wl_view(session)
+async def api_view(request):
+    return wl.APIFunction({"x": "String"}, wl.Identity)
+
+
+@routes.get("/app")
+@aiohttp_wl_view(session)
+async def app_view(request):
+    return wl.Once(wl.Get("path/to/my/complex/wl/app.wl"))
+
+
+app = web.Application()
+app.add_routes(routes)
+
+if __name__ == "__main__":
+    web.run_app(app)
+```
+
+The decorator can be used with any kind of evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
+
