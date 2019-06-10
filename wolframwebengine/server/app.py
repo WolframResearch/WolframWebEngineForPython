@@ -12,7 +12,7 @@ from wolframwebengine.server.explorer import get_wl_handler_path_from_folder
 from wolframwebengine.web import aiohttp_wl_view
 
 EXTENSIONS = {
-    ".wxf": wl.Function(wl.Import(wl.Slot(), "WXF")),
+    ".wxf": wl.Composition(wl.BinaryDeserialize, wl.ReadByteArray),
     ".mx": wl.Function(wl.Import(wl.Slot(), "MX")),
     ".m": wl.Get,
     ".wl": wl.Get,
