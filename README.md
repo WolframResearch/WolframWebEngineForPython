@@ -46,7 +46,7 @@ python3 -m wolframwebengine --demo
 ----------------------------------------------------------------------
 Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop/wolframengineforpython/wolframwebengine/examples/demoapp
-Index           index.m
+Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
 ```
@@ -105,7 +105,7 @@ The server will serve content with the following rules:
 
 1. All files with extensions '.m', '.mx', '.wxf', '.wl' will be evaluated in the Kernel using [GenerateHTTPResponse](https://reference.wolfram.com/language/ref/GenerateHTTPResponse.html) on the content of the file.
 2. Any other file will be served as static content.
-3. If the request path corresponds to a directory on disk, the server will search for a file named index.m in that directory. This convention can be changed with the --index option.
+3. If the request path corresponds to a directory on disk, the server will search for a file named index.wl in that directory. This convention can be changed with the --index option.
 
 Create an application by running the following code in your current location:
 
@@ -113,10 +113,10 @@ Create an application by running the following code in your current location:
 mkdir testapp
 mkdir testapp/form
 mkdir testapp/api
-echo 'ExportForm[{"hello", UnixTime[]}, "JSON"]' >  testapp/index.m
-echo 'FormFunction["x" -> "String"]'             >  testapp/form/index.m
-echo 'APIFunction["x" -> "String"]'              >  testapp/api/index.m
-echo 'HTTPResponse["hello world"]'               >  testapp/api/response.m
+echo 'ExportForm[{"hello", UnixTime[]}, "JSON"]' >  testapp/index.wl
+echo 'FormFunction["x" -> "String"]'             >  testapp/form/index.wl
+echo 'APIFunction["x" -> "String"]'              >  testapp/api/index.wl
+echo 'HTTPResponse["hello world"]'               >  testapp/api/response.wl
 echo '["some", "static", "JSON"]'                >  testapp/static.json
 ```
 
@@ -127,7 +127,7 @@ Start the application by running:
 ----------------------------------------------------------------------
 Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop/testapp
-Index           index.m
+Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
 ```
@@ -173,7 +173,7 @@ The first argument can be a folder or a single file.
 Write a file on your current folder:
 
 ```
->>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' >  index.m
+>>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' >  index.wl
 ```
 
 then from CLI Run
@@ -183,7 +183,7 @@ then from CLI Run
 ----------------------------------------------------------------------
 Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
-Index           index.m
+Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
 ```
@@ -191,14 +191,14 @@ Index           index.m
 If the first argument is a file, all request path will be routed to the same expression.
 If the first argument is a folder, requests will be redirected to the kernel if the url extension ends with '.m', '.mx', '.wxf', '.wl'.
 
-If the request path is a folder the server will search for an index.m in the same folder.
+If the request path is a folder the server will search for an index.wl in the same folder.
 
 ```
 >>> python3 -m wolframwebengine
 ----------------------------------------------------------------------
 Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
-Index           index.m
+Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
 ```
@@ -207,7 +207,7 @@ Index           index.m
 #### --index
 
 Specify the default file name for folder index.
-Defaults to index.m
+Defaults to index.wl
 
 ```
 python3 -m wolframwebengine --index index.wxf
@@ -229,7 +229,7 @@ If --cached is present then every request will run the source code once
 ----------------------------------------------------------------------
 Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
-Index           index.m
+Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
 ```
@@ -246,7 +246,7 @@ Allows you to specify the PORT of the webserver. Defaults to 18000.
 ----------------------------------------------------------------------
 Address          http://localhost:9090/
 Folder          /Users/rdv/Desktop
-Index           index.m
+Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
 ```
@@ -260,7 +260,7 @@ Allows you to specify the Kernel path
 ----------------------------------------------------------------------
 Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
-Index           index.m
+Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
 ```
@@ -274,7 +274,7 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 ----------------------------------------------------------------------
 Address          http://localhost:18000/
 Folder          /Users/rdv/Desktop
-Index           index.m
+Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit)
 ```

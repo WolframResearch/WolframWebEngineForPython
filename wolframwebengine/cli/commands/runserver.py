@@ -54,7 +54,7 @@ class Command(SimpleCommand):
             action="store_true",
         )
         parser.add_argument(
-            "--index", default="index.m", help="The file name to search for folder index."
+            "--index", default="index.wl", help="The file name to search for folder index."
         )
 
         parser.add_argument("--demo", action="store_true", help="Run the demo application")

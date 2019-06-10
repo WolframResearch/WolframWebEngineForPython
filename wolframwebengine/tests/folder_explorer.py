@@ -15,12 +15,12 @@ class TestCase(BaseTestCase):
         folder = module_path("wolframwebengine", "examples", "sampleapp")
 
         for path, resolved in (
-            ("/", "index.m"),
-            ("/random.m", "random.m"),
-            ("/foo/bar/", "foo/bar/index.m"),
-            ("/foo/", "foo/index.m"),
-            ("/foo/bar/index.m", "foo/bar/index.m"),
-            ("/foo/bar/something.m", "foo/bar/something.m"),
+            ("/", "index.wl"),
+            ("/random.wl", "random.wl"),
+            ("/foo/bar/", "foo/bar/index.wl"),
+            ("/foo/", "foo/index.wl"),
+            ("/foo/bar/index.wl", "foo/bar/index.wl"),
+            ("/foo/bar/something.wl", "foo/bar/something.wl"),
         ):
 
             self.assertEqual(

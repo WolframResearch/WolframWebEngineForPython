@@ -57,7 +57,7 @@ class WolframEngineTestCase(AioHTTPTestCase):
                 path=path,
                 cached=cached,
                 path_extractor=lambda request, l=len(root): request.path[l:],
-                index="index.m",
+                index="index.wl",
             )
 
             routes.get(root + "{name:.*}")(view)
@@ -91,8 +91,8 @@ class WolframEngineTestCase(AioHTTPTestCase):
 
             root = cached and "/cached" or "/app"
 
-            resp1 = await self.client.request("GET", root + "/random.m")
-            resp2 = await self.client.request("GET", root + "/random.m")
+            resp1 = await self.client.request("GET", root + "/random.wl")
+            resp2 = await self.client.request("GET", root + "/random.wl")
 
             self.assertIsInstance(float(await resp1.text()), float)
             (cached and self.assertEqual or self.assertNotEqual)(
@@ -102,14 +102,14 @@ class WolframEngineTestCase(AioHTTPTestCase):
         for loc, content in (
             ("", '"Hello from / in a folder!"'),
             ("/", '"Hello from / in a folder!"'),
-            ("/index.m", '"Hello from / in a folder!"'),
+            ("/index.wl", '"Hello from / in a folder!"'),
             ("/foo", '"Hello from foo"'),
             ("/foo/", '"Hello from foo"'),
-            ("/foo/index.m", '"Hello from foo"'),
+            ("/foo/index.wl", '"Hello from foo"'),
             ("/foo/bar", '"Hello from foo/bar"'),
             ("/foo/bar", '"Hello from foo/bar"'),
-            ("/foo/bar/index.m", '"Hello from foo/bar"'),
-            ("/foo/bar/something.m", '"Hello from foo/bar/something"'),
+            ("/foo/bar/index.wl", '"Hello from foo/bar"'),
+            ("/foo/bar/something.wl", '"Hello from foo/bar/something"'),
         ):
             resp = await self.client.request("GET", root + loc)
             self.assertEqual(resp.status, 200)
