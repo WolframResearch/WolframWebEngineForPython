@@ -326,7 +326,7 @@ urlpatterns = [
 ]
 ```
 
-The decorator can be used with any kind of evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
+The decorator can be used with any kind of syncronous evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
 
 ### Aiohttp
 
@@ -376,5 +376,5 @@ if __name__ == "__main__":
     web.run_app(app)
 ```
 
-The decorator can be used with any kind of evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
+The decorator can be used with any kind of asyncronous evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
 
