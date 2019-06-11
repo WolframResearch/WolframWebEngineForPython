@@ -3,11 +3,11 @@ from __future__ import absolute_import, print_function, unicode_literals
 from django.http import HttpResponse
 from django.urls import path
 
+from wolframclient.evaluation import WolframLanguageSession
 from wolframclient.language import wl
-from wolframwebengine.server.app import create_session
 from wolframwebengine.web import django_wl_view
 
-session = create_session()
+session = WolframLanguageSession()
 
 
 def django_view(request):
