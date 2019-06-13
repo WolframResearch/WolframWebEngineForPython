@@ -32,7 +32,7 @@ setup(
     test_suite='setup.load_tests',
     python_requires='>=3.5.3',
     install_requires = [
-        'wolframclient',
+        'wolframclient>=1.1.0',
         'aiohttp'
     ],
     project_urls={
