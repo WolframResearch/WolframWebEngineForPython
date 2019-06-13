@@ -294,7 +294,6 @@ We currently support the following frameworks:
 If you have an existing [Django](!https://www.djangoproject.com/) application you can use the `django_wl_view` decorator to evaluate Wolfram Language code during a web request.
 
 ```python
-
 from __future__ import absolute_import, print_function, unicode_literals
 
 from django.http import HttpResponse
@@ -333,7 +332,6 @@ The decorator can be used with any kind of syncronous evaluator exposed and docu
 If you have an existing [Aiohttp](!https://docs.aiohttp.org/en/stable/web_reference.html) server running you can use the `aiohttp_wl_view` decorator to evaluate Wolfram Language code during a web request.
 
 ```python
-
 from aiohttp import web
 
 from wolframclient.evaluation import WolframEvaluatorPool
