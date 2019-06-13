@@ -44,7 +44,7 @@ Start a demo server by doing:
 ```
 python3 -m wolframwebengine --demo
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
+Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop/wolframengineforpython/wolframwebengine/examples/demoapp
 Index           index.wl
 ----------------------------------------------------------------------
@@ -125,7 +125,7 @@ Start the application by running:
 ```
 >>> python3 -m wolframwebengine testapp
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
+Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop/testapp
 Index           index.wl
 ----------------------------------------------------------------------
@@ -181,7 +181,7 @@ then from CLI Run
 ```
 >>> python3 -m wolframwebengine
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
+Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.wl
 ----------------------------------------------------------------------
@@ -196,7 +196,7 @@ If the request path is a folder the server will search for an index.wl in the sa
 ```
 >>> python3 -m wolframwebengine
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
+Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.wl
 ----------------------------------------------------------------------
@@ -212,7 +212,7 @@ Defaults to index.wl
 ```
 python3 -m wolframwebengine --index index.wxf
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
+Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.wxf
 ----------------------------------------------------------------------
@@ -227,7 +227,7 @@ If --cached is present then every request will run the source code once
 ```
 >>> python3 -m wolframwebengine --cached
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
+Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.wl
 ----------------------------------------------------------------------
@@ -244,7 +244,7 @@ Allows you to specify the PORT of the webserver. Defaults to 18000.
 ```
 >>> python3 -m wolframwebengine --port 9090
 ----------------------------------------------------------------------
-Address          http://localhost:9090/
+Address         http://localhost:9090/
 Folder          /Users/rdv/Desktop
 Index           index.wl
 ----------------------------------------------------------------------
@@ -258,7 +258,7 @@ Allows you to specify the Kernel path
 ```
 >>> python3 -m wolframwebengine --kernel '/Applications/Mathematica11.3.app/Contents/MacOS/WolframKernel'
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
+Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.wl
 ----------------------------------------------------------------------
@@ -272,7 +272,7 @@ Allows you to change the default pool size for kernels. Defaults to 1.
 ```
 >>> python3 -m wolframwebengine --poolsize 4
 ----------------------------------------------------------------------
-Address          http://localhost:18000/
+Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop
 Index           index.wl
 ----------------------------------------------------------------------
