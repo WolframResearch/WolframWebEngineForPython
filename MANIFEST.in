@@ -1,4 +1,3 @@
 include LICENSE PacletInfo.m run.py
 recursive-include wolframwebengine *.m
-recursive-include wolframwebengine/tests/data *
 recursive-include wolframwebengine/tests *.py

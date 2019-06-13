@@ -22,7 +22,7 @@ def load_tests():
 
 setup(
     name = 'wolframwebengine',
-    version = '1.0.0',
+    version = '1.0.0.dev1',
     description = 'A Python library with various tools to start a wolfram engine a server content.',
     keywords=['Wolfram Language', 'Wolfram Desktop', 'Mathematica', 'Web Development', 'Wolfram Web Engine'],
     author = 'Wolfram Research, Riccardo Di Virgilio',
@@ -32,7 +32,7 @@ setup(
     test_suite='setup.load_tests',
     python_requires='>=3.5.3',
     install_requires = [
-        'wolframclient',
+        'wolframclient>=1.1.0',
         'aiohttp'
     ],
     project_urls={
@@ -42,11 +42,11 @@ setup(
     classifiers = [
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3"
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Topic :: Software Development :: Libraries :: Wolfram Engine Library"
+        "Topic :: Software Development :: Libraries"
     ],
     entry_points={
         'console_scripts': [
