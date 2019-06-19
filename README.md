@@ -2,14 +2,12 @@
 
 Wolfram Web Engine for Python allows you to use a Wolfram Kernel during a web request.
 
-This cli serves files from the current directory and below, directly mapping the directory structure to HTTP requests.
-
 ## Getting Started
 
 ### Prerequisites
 
 1. Python 3.5 or higher
-2. Wolfram Language 11.3 or higher
+2. Wolfram Language 11.3 or higher (Mathematica, Wolfram Desktop, or Wolfram Engine)
 3. [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython)
 
 ### Install Using pip (Recommended)
@@ -18,7 +16,7 @@ Recommended for most users. It installs the latest stable version released by Wo
 Evaluate the following command in a terminal:
 
 ```
->>> pip3 install wolframengineforpython
+>>> pip3 install wolframwebengine
 ```
 
 ### Install Using Git
@@ -176,7 +174,7 @@ Write a file on your current folder:
 >>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' >  index.wl
 ```
 
-then from CLI Run
+Then from a command line run:
 
 ```
 >>> python3 -m wolframwebengine
@@ -188,8 +186,7 @@ Index           index.wl
 (Press CTRL+C to quit) 
 ```
 
-If the first argument is a file, all request path will be routed to the same expression.
-If the first argument is a folder, requests will be redirected to the kernel if the url extension ends with '.m', '.mx', '.wxf', '.wl'.
+If the first argument is a file, requests will be redirected to files in that directory if the url extension '.m', '.mx', '.wxf', '.wl'. If the extension cannot be handled by a kernel, the file will be served as static content.
 
 If the request path is a folder the server will search for an index.wl in the same folder.
 
@@ -206,7 +203,7 @@ Index           index.wl
 
 #### --index
 
-Specify the default file name for folder index.
+Specify the default file name for the folder index.
 Defaults to index.wl
 
 ```
@@ -222,7 +219,7 @@ Index           index.wxf
 
 #### --cached
 
-If --cached is present then every request will run the source code once
+If --cached is present the code in each file will be run only once, with subsequent requests retrieving the cached result.
 
 ```
 >>> python3 -m wolframwebengine --cached
@@ -256,7 +253,7 @@ Index           index.wl
 Allows you to specify the Kernel path
 
 ```
->>> python3 -m wolframwebengine --kernel '/Applications/Mathematica11.3.app/Contents/MacOS/WolframKernel'
+>>> python3 -m wolframwebengine --kernel '/Applications/Wolfram Desktop 12.app/Contents/MacOS/WolframKernel'
 ----------------------------------------------------------------------
 Address         http://localhost:18000/
 Folder          /Users/rdv/Desktop
@@ -267,8 +264,7 @@ Index           index.wl
 
 #### --poolsize SIZE
 
-Allows you to change the default pool size for kernels. Defaults to 1.
-
+Wolfram Web Engine for Python will launch a pool of Wolfram Language kernels to handle incoming requests. Running more than one kernel can improve responsiveness if multiple requests arrive at the same time. The --poolsize option lets you change the number of kernels that will be launched. Defaults to 1.
 ```
 >>> python3 -m wolframwebengine --poolsize 4
 ----------------------------------------------------------------------
@@ -325,7 +321,7 @@ urlpatterns = [
 ]
 ```
 
-The decorator can be used with any kind of syncronous evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
+The decorator can be used with any kind of synchronous evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
 
 ### Aiohttp
 
@@ -374,5 +370,5 @@ if __name__ == "__main__":
     web.run_app(app)
 ```
 
-The decorator can be used with any kind of asyncronous evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
+The decorator can be used with any kind of asynchronous evaluator exposed and documented in [WolframClientForPython](!https://github.com/WolframResearch/WolframClientForPython).
 
