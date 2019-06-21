@@ -171,16 +171,17 @@ The first argument can be a folder or a single file.
 Write a file on your current folder:
 
 ```
->>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' >  index.wl
+>>> mkdir testapp
+>>> echo 'ExportForm[{"hello", "from", "Kernel", UnixTime[]}, "JSON"]' > testapp/index.wl
 ```
 
 Then from a command line run:
 
 ```
->>> python3 -m wolframwebengine
+>>> python3 -m wolframwebengine testapp
 ----------------------------------------------------------------------
 Address         http://localhost:18000/
-Folder          /Users/rdv/Desktop
+Folder          /Users/rdv/Desktop/testapp
 Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit) 
@@ -189,17 +190,6 @@ Index           index.wl
 If the first argument is a file, requests will be redirected to files in that directory if the url extension '.m', '.mx', '.wxf', '.wl'. If the extension cannot be handled by a kernel, the file will be served as static content.
 
 If the request path is a folder the server will search for an index.wl in the same folder.
-
-```
->>> python3 -m wolframwebengine
-----------------------------------------------------------------------
-Address         http://localhost:18000/
-Folder          /Users/rdv/Desktop
-Index           index.wl
-----------------------------------------------------------------------
-(Press CTRL+C to quit) 
-```
-
 
 #### --index
 
