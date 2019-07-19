@@ -187,7 +187,7 @@ Index           index.wl
 (Press CTRL+C to quit) 
 ```
 
-If the first argument is a file, requests will be redirected to files in that directory if the url extension '.m', '.mx', '.wxf', '.wl'. If the extension cannot be handled by a kernel, the file will be served as static content.
+If the first argument is a file, requests will be redirected to files in that directory if the url extension is '.m', '.mx', '.wxf', '.wl'. If the extension cannot be handled by a kernel, the file will be served as static content.
 
 If the request path is a folder the server will search for an index.wl in the same folder.
 
