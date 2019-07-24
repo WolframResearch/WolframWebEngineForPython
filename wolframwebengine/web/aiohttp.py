@@ -1,7 +1,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from functools import partial
-from operator import attrgetter
 
 from wolframclient.language import wl
 from wolframclient.utils.api import aiohttp
@@ -14,7 +13,7 @@ from wolframwebengine.web.utils import (
 from wolframwebengine.web.utils import to_multipart as _to_multipart
 
 to_multipart = partial(
-    _to_multipart, namegetter=attrgetter("filename"), filegetter=attrgetter("file")
+    _to_multipart, namegetter=lambda f: f.filename, filegetter=lambda f: f.file
 )
 
 
