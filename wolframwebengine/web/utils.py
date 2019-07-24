@@ -6,6 +6,7 @@ import shutil
 import tempfile
 import uuid
 
+from wolframclient.language import wl
 from wolframclient.utils import six
 from wolframclient.utils.asyncio import get_event_loop
 from wolframclient.utils.encoding import force_text
@@ -19,6 +20,16 @@ def auto_wait(obj, loop=None):
     if is_coroutine(obj):
         return get_event_loop(loop).run_until_complete(obj)
     return obj
+
+
+def make_generate_httpresponse_expression(request, expression):
+    return wl.GenerateHTTPResponse(expression, request)(
+        ("BodyByteArray", "Headers", "StatusCode")
+    )
+
+
+def process_generate_httpresponse_expression(response):
+    return response
 
 
 def to_multipart(v, namegetter=identity, filegetter=identity):
