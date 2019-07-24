@@ -7,6 +7,7 @@ import tempfile
 import uuid
 
 from wolframclient.language import wl
+from wolframclient.serializers import export
 from wolframclient.utils import six
 from wolframclient.utils.asyncio import get_event_loop
 from wolframclient.utils.encoding import force_text
@@ -29,7 +30,13 @@ def make_generate_httpresponse_expression(request, expression):
 
 
 def process_generate_httpresponse_expression(response):
-    return response
+    if isinstance(response, dict):
+        return response
+    return {
+        "BodyByteArray": export(response, "wl"),
+        "Headers": (wl.Rule("content-type", "text/plain;charset=utf-8"),),
+        "StatusCode": 500,
+    }
 
 
 def to_multipart(v, namegetter=identity, filegetter=identity):
