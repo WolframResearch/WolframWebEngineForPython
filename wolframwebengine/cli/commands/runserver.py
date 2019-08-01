@@ -55,7 +55,17 @@ class Command(SimpleCommand):
             "--index", default="index.wl", help="The file name to search for folder index."
         )
 
-        parser.add_argument("--demo", action="store_true", help="Run the demo application")
+        parser.add_argument(
+            "--demo",
+            nargs="?",
+            default=False,
+            help="Run the demo application",
+            choices=tuple(
+                path
+                for path in os.listdir(self.demo_path())
+                if os.path.isdir(self.demo_path(path))
+            ),
+        )
 
     def print_line(self, f="", s=""):
         self.print(f.ljust(15), s)
@@ -63,10 +73,15 @@ class Command(SimpleCommand):
     def print_separator(self):
         self.print("-" * 70)
 
+    def demo_path(self, *args):
+        return module_path("wolframwebengine", "examples", "demo", *args)
+
     def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, **opts):
 
-        if demo:
-            path = module_path("wolframwebengine", "examples", "demoapp")
+        if demo is None:
+            path = self.demo_path("default")
+        elif demo:
+            path = self.demo_path(demo)
 
         path = os.path.abspath(os.path.expanduser(path))
 
