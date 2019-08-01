@@ -8,7 +8,11 @@ from django.http import HttpResponse
 from wolframclient.language import wl
 from wolframclient.utils.decorators import to_dict
 from wolframclient.utils.functional import first, iterate, last
-from wolframwebengine.web.utils import auto_wait
+from wolframwebengine.web.utils import (
+    auto_wait,
+    make_generate_httpresponse_expression,
+    process_generate_httpresponse_expression,
+)
 from wolframwebengine.web.utils import to_multipart as _to_multipart
 
 to_multipart = partial(_to_multipart, namegetter=attrgetter("name"))
@@ -42,12 +46,8 @@ def django_request_meta(request):
 def generate_http_response(session, request, expression):
     wl_req = django_request_meta(request)
 
-    response = auto_wait(
-        session.evaluate(
-            wl.GenerateHTTPResponse(expression, wl_req)(
-                ("BodyByteArray", "Headers", "StatusCode")
-            )
-        )
+    response = process_generate_httpresponse_expression(
+        auto_wait(session.evaluate(make_generate_httpresponse_expression(wl_req, expression)))
     )
 
     http = HttpResponse(
