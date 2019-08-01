@@ -33,7 +33,7 @@ def process_generate_httpresponse_expression(response):
     if isinstance(response, dict):
         return response
     return {
-        "BodyByteArray": export(response, target_format = "wl"),
+        "BodyByteArray": export(response, target_format="wl"),
         "Headers": (wl.Rule("content-type", "text/plain;charset=utf-8"),),
         "StatusCode": 500,
     }
