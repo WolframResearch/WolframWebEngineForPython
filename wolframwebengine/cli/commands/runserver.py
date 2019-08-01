@@ -59,7 +59,7 @@ class Command(SimpleCommand):
             "--demo",
             nargs="?",
             default=False,
-            help="Run the demo application",
+            help="Run a demo application",
             choices=tuple(
                 path
                 for path in os.listdir(self.demo_path())
