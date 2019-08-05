@@ -10,8 +10,10 @@ from aiohttp.abc import AbstractAccessLogger
 from wolframclient.cli.utils import SimpleCommand
 from wolframclient.exception import WolframKernelException
 from wolframclient.utils.api import asyncio
+from wolframclient.utils.decorators import cached_property, to_dict
+from wolframclient.utils.functional import first
 from wolframclient.utils.importutils import module_path
-from wolframwebengine.server.app import create_session, create_view
+from wolframwebengine.server.app import create_session, create_view, is_wl_code
 
 
 class AccessLogger(AbstractAccessLogger):
@@ -60,11 +62,7 @@ class Command(SimpleCommand):
             nargs="?",
             default=False,
             help="Run a demo application",
-            choices=tuple(
-                path
-                for path in os.listdir(self.demo_path())
-                if os.path.isdir(self.demo_path(path))
-            ),
+            choices=tuple(self.demo_choices.keys()),
         )
 
     def print_line(self, f="", s=""):
@@ -73,15 +71,27 @@ class Command(SimpleCommand):
     def print_separator(self):
         self.print("-" * 70)
 
+    @cached_property
+    @to_dict
+    def demo_choices(self):
+
+        yield None, "default"
+
+        for path in os.listdir(self.demo_path()):
+
+            if os.path.isdir(path):
+                yield path, path
+
+            if is_wl_code(path):
+                yield first(os.path.splitext(path)), path
+
     def demo_path(self, *args):
         return module_path("wolframwebengine", "examples", "demo", *args)
 
     def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, **opts):
 
-        if demo is None:
-            path = self.demo_path("default")
-        elif demo:
-            path = self.demo_path(demo)
+        if demo is None or demo:
+            path = self.demo_path(self.demo_choices[demo])
 
         path = os.path.abspath(os.path.expanduser(path))
 
