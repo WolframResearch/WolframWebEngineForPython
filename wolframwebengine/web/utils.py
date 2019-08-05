@@ -24,7 +24,7 @@ def auto_wait(obj, loop=None):
 
 
 def make_generate_httpresponse_expression(request, expression):
-    return wl.GenerateHTTPResponse(expression, request)(
+    return wl.GenerateHTTPResponse(wl.Unevaluated(expression), request)(
         ("BodyByteArray", "Headers", "StatusCode")
     )
 
