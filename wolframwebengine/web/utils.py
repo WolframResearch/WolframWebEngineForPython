@@ -24,7 +24,7 @@ def auto_wait(obj, loop=None):
 
 
 def make_generate_httpresponse_expression(request, expression):
-    return wl.GenerateHTTPResponse(expression, request)(
+    return wl.GenerateHTTPResponse(wl.Unevaluated(expression), request)(
         ("BodyByteArray", "Headers", "StatusCode")
     )
 
@@ -33,7 +33,7 @@ def process_generate_httpresponse_expression(response):
     if isinstance(response, dict):
         return response
     return {
-        "BodyByteArray": export(response, target_format = "wl"),
+        "BodyByteArray": export(response, target_format="wl"),
         "Headers": (wl.Rule("content-type", "text/plain;charset=utf-8"),),
         "StatusCode": 500,
     }
