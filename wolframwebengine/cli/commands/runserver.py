@@ -75,7 +75,7 @@ class Command(SimpleCommand):
     @to_dict
     def demo_choices(self):
 
-        yield None, "default"
+        yield None, "form.wl"
 
         for path in os.listdir(self.demo_path()):
 
