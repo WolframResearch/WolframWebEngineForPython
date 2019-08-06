@@ -148,20 +148,42 @@ One advantage of a multi-file application structure is that is very easy to exte
 >>> python3 -m wolframwebengine --help
 usage: __main__.py [-h] [--port PORT] [--domain DOMAIN] [--kernel KERNEL]
                    [--poolsize POOLSIZE] [--cached] [--lazy] [--index INDEX]
+                   [--demo [{None,ask,trip,ca,form}]]
                    [path]
 
 positional arguments:
   path
 
 optional arguments:
-  -h, --help           show this help message and exit
-  --port PORT          Insert the port.
-  --domain DOMAIN      Insert the domain.
-  --kernel KERNEL      Insert the kernel path.
-  --poolsize POOLSIZE  Insert the kernel pool size.
-  --cached             The server will cache the WL input expression.
-  --lazy               The server will start the kernels on the first request.
-  --index INDEX        The file name to search for folder index.
+  -h, --help            show this help message and exit
+  --port PORT           Insert the port.
+  --domain DOMAIN       Insert the domain.
+  --kernel KERNEL       Insert the kernel path.
+  --poolsize POOLSIZE   Insert the kernel pool size.
+  --cached              The server will cache the WL input expression.
+  --lazy                The server will start the kernels on the first
+                        request.
+  --index INDEX         The file name to search for folder index.
+  --demo [{None,ask,trip,ca,form}]
+                        Run a demo application
+```
+
+#### demo
+
+Run a demo application:
+
+ 1. ask. Marginal Tax rate calculator using AskFunction.
+ 2. trip. Trip calculator using FormFunction and TravelDirections.
+ 3. ca. Cellular Automaton demo gallery using URLDispatcher and GalleryView.
+ 4. form. ImageProcessing demo using FormFunction.
+
+```
+>>> python3 -m wolframwebengine --demo ca
+----------------------------------------------------------------------
+Address         http://localhost:18000/
+File            /Users/rdv/Wolfram/git/wolframengineforpython/wolframwebengine/examples/demo/ca.wl
+----------------------------------------------------------------------
+(Press CTRL+C to quit) 
 ```
 
 #### path
