@@ -4,6 +4,6 @@ FormFunction[
   "city" -> RepeatingElement["City", {2, 5}], 
   GeoGraphics[
     Append[GeoMarker /@ #city, 
-     Style[Line[TravelDirections[#city]], Thick, Red]]] &, 
+     Style[Line[TravelDirections[#city]], Thick, Red]], ImageSize -> 850] &, 
   AppearanceRules -> <|
     "Title" -> "Get travel directions for your trip"|>]
