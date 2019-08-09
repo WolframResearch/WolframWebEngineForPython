@@ -26,8 +26,8 @@ AskFunction[Module[{bracket, tax, income},
         Ask[{"nodeps", "How many?"} -> 
            Restricted["Integer", {0, Infinity}]]* 4050, 0]}];
    AskTemplateDisplay[
-    Column[{"You owe $" <> ToString[tax] <> " in taxes.", 
+    Column[{"You owe $" <> TextString[tax] <> " in taxes.", 
        "Your marginal tax rate is " <> 
-        ToString[Round[100.*tax/#income, 0.1]] <> "%", 
+        TextString[Round[100.*tax/#income, 0.1]] <> "%", 
        PieChart[{tax, income}]}] &]
    ]]
