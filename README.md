@@ -1,6 +1,9 @@
 # Wolfram Web Engine for Python
 
-Wolfram Web Engine for Python allows you to use a Wolfram Kernel during a web request.
+Wolfram Web Engine for Python uses the Python AIOHTTP web server to handle requests for a Wolfram Engine.
+Web pages are specified on the server with standard Wolfram Language functions such as APIFunction, FormFunction, FormPage,
+URLDispatcher, AskFunction, HTTPResponse, HTTPRedirect, etc. This allows you to integrate Wolfram Language 
+functionality seamlessly with existing Python web applications like Django and AIOHTTP.
 
 ## Getting Started
 
