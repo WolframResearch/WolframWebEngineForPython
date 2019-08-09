@@ -33,7 +33,7 @@ setup(
     python_requires='>=3.5.3',
     install_requires = [
         'wolframclient>=1.1.0',
-        'aiohttp'
+        'aiohttp>=3.5.4'
     ],
     project_urls={
         'Source code': 'https://github.com/WolframResearch/WolframWebEngineForPython',
