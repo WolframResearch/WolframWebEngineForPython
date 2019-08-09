@@ -135,7 +135,11 @@ class Command(SimpleCommand):
 
             self.print_separator()
 
-            self.print_line("(Press CTRL+C to quit)")
+            if sys.platform == 'win32':
+                self.print_line("(Press CTRL+BREAK to quit)")
+            else:
+                self.print_line("(Press CTRL+C to quit)")
+
             self.print_line()
 
             logging.basicConfig(level=logging.INFO, format="%(message)s")
