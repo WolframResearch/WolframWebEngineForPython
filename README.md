@@ -175,10 +175,10 @@ optional arguments:
 
 Run a demo application:
 
- 1. ask. Marginal Tax rate calculator using AskFunction.
- 2. trip. Trip calculator using FormFunction and TravelDirections.
- 3. ca. Cellular Automaton demo gallery using URLDispatcher and GalleryView.
- 4. form. ImageProcessing demo using FormFunction.
+ 1. __ask__: Marginal Tax rate calculator using AskFunction.
+ 2. __trip__: Trip calculator using FormFunction and TravelDirections.
+ 3. __ca__: Cellular Automaton demo gallery using URLDispatcher and GalleryView.
+ 4. __form__: ImageProcessing demo using FormFunction.
 
 ```
 >>> python3 -m wolframwebengine --demo ca
