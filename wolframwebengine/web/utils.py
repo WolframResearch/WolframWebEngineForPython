@@ -31,6 +31,9 @@ def make_generate_httpresponse_expression(request, expression):
 
 def process_generate_httpresponse_expression(response):
     if isinstance(response, dict):
+        if not response.get('BodyByteArray', None):
+            #empty byte array is returning a an empty list, we need an empty byte array
+            response['BodyByteArray'] = b''
         return response
     return {
         "BodyByteArray": export(response, target_format="wl"),
