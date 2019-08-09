@@ -10,7 +10,7 @@ AskFunction[Module[{bracket, tax, income},
        "Married filing separately" -> {9275, 37650, 75950, 115725, 
          206675, 233475}}];
    income = 
-    Ask[{"income", "What was your income in 2015"} -> 
+    Ask[{"income", "What was your income in the last year?"} -> 
       Restricted["Number", {0, Infinity}]];
    tax = Integrate[
      Piecewise[{{.10 , 0 <= x <= bracket[[1]]}, {.15, 
