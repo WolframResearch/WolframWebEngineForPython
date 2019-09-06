@@ -118,8 +118,8 @@ mkdir testapp/form
 mkdir testapp/api
 echo 'ExportForm[{"hello", UnixTime[]}, "JSON"]' >  testapp/index.wl
 echo 'FormFunction["x" -> "String"]'             >  testapp/form/index.wl
-echo 'APIFunction["x" -> "String"]'              >  testapp/api/index.wl
-echo 'HTTPResponse["hello world"]'               >  testapp/api/response.wl
+echo 'APIFunction["x" -> "Number", #x! &]'       >  testapp/api/index.wl
+echo 'HTTPResponse["hello world"]'               >  testapp/response.wl
 echo '["some", "static", "JSON"]'                >  testapp/static.json
 ```
 
@@ -140,7 +140,8 @@ Then open the browser at the following locations:
 ```
 http://localhost:18000/
 http://localhost:18000/form
-http://localhost:18000/api
+http://localhost:18000/api?x=4
+http://localhost:18000/response.wl
 http://localhost:18000/static.json
 ```
 
