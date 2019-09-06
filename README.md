@@ -63,7 +63,7 @@ Now you can open your web browser at the address http://localhost:18000/
 1. Use a single file with URLDispatcher
 2. Use multiple files in a directory layout
 
-## Single file with URLDispatcher
+### Single file with URLDispatcher
 
 One way to run your server is to direct all requests to a single file
 that runs a Wolfram Language [URLDispatcher](https://reference.wolfram.com/language/ref/URLDispatcher.html) function.
@@ -100,7 +100,7 @@ http://localhost:18000/api
 
 For more information about `URLDispatcher` please refer to the [online documentation](https://reference.wolfram.com/language/ref/URLDispatcher.html).
 
-## Multiple files in a directory layout
+### Multiple files in a directory layout
 
 Another way to write an application is to create a directory structure that is served by the server. The url for each file will match the file's directory path.
 
@@ -147,7 +147,7 @@ http://localhost:18000/static.json
 One advantage of a multi-file application structure is that is very easy to extend the application. You can simply place new files into the appropriate location in your application directory and they will automatically be served.
 
 
-### Options
+## Options
 
 ```
 >>> python3 -m wolframwebengine --help
