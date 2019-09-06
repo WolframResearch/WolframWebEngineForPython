@@ -38,6 +38,8 @@ Install the library in your site-package directory:
 >>> pip3 install .
 ```
 
+The following method is not installing the library globally, therefore all the example commands needs to run from the cloned directory.
+
 ### Start a demo server
 
 Start a demo server by doing:
