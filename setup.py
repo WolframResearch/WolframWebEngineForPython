@@ -22,7 +22,7 @@ def load_tests():
 
 setup(
     name = 'wolframwebengine',
-    version = '1.0.0.dev1',
+    version = '1.0.0',
     description = 'A Python library with various tools to start a wolfram engine a server content.',
     keywords=['Wolfram Language', 'Wolfram Desktop', 'Mathematica', 'Web Development', 'Wolfram Web Engine'],
     author = 'Wolfram Research, Riccardo Di Virgilio',
