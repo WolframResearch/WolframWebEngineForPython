@@ -56,7 +56,7 @@ Index           index.wl
 
 Now you can open your web browser at the address http://localhost:18000/
 
-![image](https://raw.githubusercontent.com/WolframResearch/WolframWebEngineForPython/master/docs/assets/image1.png)
+![image](https://raw.githubusercontent.com/WolframResearch/WolframWebEngineForPython/master/docs/assets/image1.png =600x)
 
 ## Two different ways of structuring an application:
 
