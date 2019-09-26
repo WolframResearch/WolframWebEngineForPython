@@ -5,8 +5,8 @@ from operator import itemgetter
 
 from wolframclient.cli.utils import SimpleCommand
 from wolframclient.serializers import export
-from wolframclient.utils.api import aiohttp
-from wolframclient.utils.asyncio import run_in_loop, wait_all
+from wolframclient.utils.api import aiohttp, asyncio
+from wolframclient.utils.asyncio import run_in_loop
 from wolframclient.utils.encoding import force_text
 from wolframclient.utils.functional import iterate
 
@@ -62,7 +62,7 @@ class Command(SimpleCommand):
     @run_in_loop
     async def wait_for_tasks(self, requests, clients, url):
         # Wait for all of the coroutines to finish.
-        results = await wait_all(self.generate_tasks(requests, clients, url))
+        results = await asyncio.gather(*self.generate_tasks(requests, clients, url))
         results = tuple(iterate(*results))
         return results
 
