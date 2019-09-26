@@ -27,10 +27,10 @@ setup(
     keywords=['Wolfram Language', 'Wolfram Desktop', 'Mathematica', 'Web Development', 'Wolfram Web Engine'],
     author = 'Wolfram Research, Riccardo Di Virgilio',
     author_email = 'support@wolfram.com, riccardod@wolfram.com',
-    include_package_data=True,
     packages=find_packages(),
     test_suite='setup.load_tests',
     python_requires='>=3.5.3',
+    include_package_data=True,
     install_requires = [
         'wolframclient>=1.1.0',
         'aiohttp>=3.5.4'
