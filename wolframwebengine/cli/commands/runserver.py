@@ -135,7 +135,7 @@ class Command(SimpleCommand):
 
             self.print_separator()
 
-            if sys.platform == 'win32':
+            if sys.platform == "win32":
                 self.print_line("(Press CTRL+BREAK to quit)")
             else:
                 self.print_line("(Press CTRL+C to quit)")
