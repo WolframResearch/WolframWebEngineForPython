@@ -1,9 +1,10 @@
-FormFunction[
-    {"image" -> "Image", "filter" -> ImageEffect[]}, 
-    ImageEffect[#image, #filter] &,
-    "PNG",
+FormPage[
+    {"From" -> "City", "To" -> "City"}, 
+    GeoGraphics[
+        Style[Line[TravelDirections[{#From, #To}]], Thick, Red]
+    ] &, 
     AppearanceRules -> <|
-        "Title" -> "Welcome to Wolfram Web Engine",
+        "Title" -> "Get travel directions for your trip",
         "Description" -> TemplateApply["This is a sample application running on a `` Kernel.", $VersionNumber]
     |>
 ]
