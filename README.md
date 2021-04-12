@@ -152,6 +152,8 @@ One advantage of a multi-file application structure is that is very easy to exte
 
 Wolfram Web Engine for Python is available as [a container image from Docker Hub](https://hub.docker.com/r/wolframresearch/wolframwebengineforpython) for use in containerized environments.
 
+This image is based on the [official Wolfram Engine Docker image](https://hub.docker.com/r/wolframresearch/wolframengine); information on product activation and license terms is available on the [Docker Hub page](https://hub.docker.com/r/wolframresearch/wolframengine) for the latter image.
+
 ```
 # exposes the server on port 8080 of the host machine
 >>> docker run -ti -p 8080:18000 wolframresearch/wolframwebengineforpython --demo
@@ -160,9 +162,10 @@ Wolfram Web Engine for Python is available as [a container image from Docker Hub
 >>> docker run -ti -p 8080:18000 wolframresearch/wolframwebengineforpython /srv
 ```
 
-This image is based on the [official Wolfram Engine Docker image](https://hub.docker.com/r/wolframresearch/wolframengine); information on product activation and license terms is available on the [Docker Hub page](https://hub.docker.com/r/wolframresearch/wolframengine) for the latter image.
+The commands above do not include activation/licensing configuration; see the [official Wolfram Engine Docker image](https://hub.docker.com/r/wolframresearch/wolframengine) for information on activating the Wolfram Engine kernel.
 
-Note regarding on-demand licensing: As Wolfram Web Engine for Python does not use WolframScript, the `-entitlement` command-line option and the `WOLFRAMSCRIPT_ENTITLEMENTID` environment variable are not sufficient to pass an on-demand license entitlement ID to the Wolfram Engine kernel inside this image. As a workaround, the `WOLFRAMINIT` environment variable can be set to pass both the entitlement ID and the license server address to the kernel:
+
+Note regarding on-demand licensing: As Wolfram Web Engine for Python does not use WolframScript, the `-entitlement` command-line option and the `WOLFRAMSCRIPT_ENTITLEMENTID` environment variable cannot be used to pass an on-demand license entitlement ID to the Wolfram Engine kernel inside this image. As a workaround, the `WOLFRAMINIT` environment variable can be set to pass both the entitlement ID and the license server address to the kernel:
 
 ```
 >>> docker run -ti -p 8080:18000 --env WOLFRAMINIT='-pwfile !cloudlm.wolfram.com -entitlement O-WSTD-DA42-GKX4Z6NR2DSZR' wolframresearch/wolframwebengineforpython --demo

@@ -3,9 +3,8 @@ FROM wolframresearch/wolframengine:latest
 USER root
 
 RUN apt-get update -y && \
-  apt-get install -y python3 python3-pip
-
-RUN pip3 install wolframclient
+  apt-get install -y python3 python3-pip && \
+  pip3 install wolframclient
 
 COPY . /tmp/build
 RUN pip3 install /tmp/build && \
