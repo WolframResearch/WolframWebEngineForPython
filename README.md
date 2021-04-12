@@ -148,6 +148,27 @@ http://localhost:18000/static.json
 One advantage of a multi-file application structure is that is very easy to extend the application. You can simply place new files into the appropriate location in your application directory and they will automatically be served.
 
 
+## Using Docker
+
+Wolfram Web Engine for Python is available as [a container image from Docker Hub](https://hub.docker.com/r/wolframresearch/wolframwebengineforpython) for use in containerized environments.
+
+```
+# exposes the server on port 8080 of the host machine
+>>> docker run -ti -p 8080:18000 wolframresearch/wolframwebengineforpython --demo
+
+# serve files from the /srv directory
+>>> docker run -ti -p 8080:18000 wolframresearch/wolframwebengineforpython /srv
+```
+
+This image is based on the [official Wolfram Engine Docker image](https://hub.docker.com/r/wolframresearch/wolframengine); information on product activation and license terms is available on the [Docker Hub page](https://hub.docker.com/r/wolframresearch/wolframengine) for the latter image.
+
+Note regarding on-demand licensing: As Wolfram Web Engine for Python does not use WolframScript, the `-entitlement` command-line option and the `WOLFRAMSCRIPT_ENTITLEMENTID` environment variable are not sufficient to pass an on-demand license entitlement ID to the Wolfram Engine kernel inside this image. As a workaround, the `WOLFRAMINIT` environment variable can be set to pass both the entitlement ID and the license server address to the kernel:
+
+```
+>>> docker run -ti -p 8080:18000 --env WOLFRAMINIT='-pwfile !cloudlm.wolfram.com -entitlement O-WSTD-DA42-GKX4Z6NR2DSZR' wolframresearch/wolframwebengineforpython --demo
+```
+
+
 ## Options
 
 ```
