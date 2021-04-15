@@ -1,9 +1,9 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
-import os, logging
+import logging
+import os
 
 from aiohttp import web
-
 from wolframclient.evaluation import WolframEvaluatorPool, WolframLanguageAsyncSession
 from wolframclient.language import wl
 from wolframclient.utils.functional import last
@@ -29,10 +29,19 @@ def get_wl_handler(path):
     return EXTENSIONS[last(os.path.splitext(path)).lower()]
 
 
-def create_session(path=None, poolsize=1, inputform_string_evaluation=False, kernel_loglevel=logging.INFO, **opts):
+def create_session(
+    path=None,
+    poolsize=1,
+    inputform_string_evaluation=False,
+    kernel_loglevel=logging.INFO,
+    **opts
+):
     if poolsize <= 1:
         return WolframLanguageAsyncSession(
-            path, inputform_string_evaluation=inputform_string_evaluation, kernel_loglevel = kernel_loglevel, **opts
+            path,
+            inputform_string_evaluation=inputform_string_evaluation,
+            kernel_loglevel=kernel_loglevel,
+            **opts
         )
     return WolframEvaluatorPool(
         path,
