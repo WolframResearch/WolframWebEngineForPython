@@ -6,7 +6,6 @@ import sys
 
 from aiohttp import web
 from aiohttp.abc import AbstractAccessLogger
-
 from wolframclient.cli.utils import SimpleCommand
 from wolframclient.exception import WolframKernelException
 from wolframclient.utils.api import asyncio

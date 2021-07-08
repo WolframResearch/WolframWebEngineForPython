@@ -2,7 +2,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
-
 from wolframclient.utils.api import json
 from wolframclient.utils.functional import first
 from wolframclient.utils.tests import TestCase as BaseTestCase
