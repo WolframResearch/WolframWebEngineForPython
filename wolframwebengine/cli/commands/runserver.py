@@ -38,6 +38,7 @@ class Command(SimpleCommand):
         parser.add_argument("--port", default=18000, help="Insert the port.")
         parser.add_argument("--domain", default="localhost", help="Insert the domain.")
         parser.add_argument("--kernel", default=None, help="Insert the kernel path.")
+        parser.add_argument("--initfile", default=None, help="Insert the initfile path.")
         parser.add_argument(
             "--poolsize", default=1, help="Insert the kernel pool size.", type=int
         )
@@ -88,7 +89,7 @@ class Command(SimpleCommand):
     def demo_path(self, *args):
         return module_path("wolframwebengine", "examples", "demo", *args)
 
-    def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, **opts):
+    def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, initfile, **opts):
 
         if demo is None or demo:
             path = self.demo_path(self.demo_choices[demo])
@@ -96,7 +97,7 @@ class Command(SimpleCommand):
         path = os.path.abspath(os.path.expanduser(path))
 
         try:
-            session = create_session(kernel, poolsize=poolsize)
+            session = create_session(kernel, poolsize=poolsize, initfile=initfile)
 
         except WolframKernelException as e:
             self.print(e)
