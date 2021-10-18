@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.urls import path
 from wolframclient.evaluation import WolframLanguageSession
 from wolframclient.language import wl
+
 from wolframwebengine.web import django_wl_view
 
 session = WolframLanguageSession()
