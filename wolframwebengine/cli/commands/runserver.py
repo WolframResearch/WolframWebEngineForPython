@@ -3,7 +3,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import os
 import sys
-
+from functools import partial
 from aiohttp import web
 from aiohttp.abc import AbstractAccessLogger
 from wolframclient.cli.utils import SimpleCommand
@@ -20,6 +20,7 @@ class AccessLogger(AbstractAccessLogger):
         self.logger.info(
             "%s %s done in %.4fs: %s" % (request.method, request.path, time, response.status)
         )
+
 
 
 class Command(SimpleCommand):
@@ -65,6 +66,14 @@ class Command(SimpleCommand):
             choices=tuple(self.demo_choices.keys()),
         )
 
+        parser.add_argument(
+            "--client_max_size",
+            default = 10,
+            dest = "client_max_size",
+            help = "Maximum size of client uploads, in Mb",
+            type = float
+        )
+
     def print_line(self, f="", s=""):
         self.print(f.ljust(15), s)
 
@@ -88,12 +97,14 @@ class Command(SimpleCommand):
     def demo_path(self, *args):
         return module_path("wolframwebengine", "examples", "demo", *args)
 
-    def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, initfile, **opts):
+    def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, initfile, client_max_size, **opts):
 
         if demo is None or demo:
             path = self.demo_path(self.demo_choices[demo])
 
         path = os.path.abspath(os.path.expanduser(path))
+
+        client_max_size = int(client_max_size * (1024 ** 2))
 
         try:
             session = create_session(kernel, poolsize=poolsize, initfile=initfile)
@@ -103,11 +114,16 @@ class Command(SimpleCommand):
             self.print("Use --help to display all available options.")
             sys.exit(1)
 
+        loop = asyncio.get_event_loop()
+
         async def main():
 
             view = create_view(session, path, index=index, **opts)
 
-            runner = self.ServerRunner(self.Server(view, access_log_class=self.AccessLogger))
+            def request_factory(*args, **opts):
+                return web.BaseRequest(*args, **opts, client_max_size=client_max_size, loop=loop)
+
+            runner = self.ServerRunner(self.Server(view, access_log_class=self.AccessLogger, request_factory=request_factory))
             await runner.setup()
             await self.TCPSite(runner, domain, port).start()
 
@@ -150,7 +166,6 @@ class Command(SimpleCommand):
             while True:
                 await asyncio.sleep(3600)
 
-        loop = asyncio.get_event_loop()
         try:
             loop.run_until_complete(main())
         except KeyboardInterrupt:

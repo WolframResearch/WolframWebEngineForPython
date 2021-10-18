@@ -325,6 +325,19 @@ Index           index.wl
 If the option is present the server will wait for the first request to spawn the kernels, instead of spawning them immediately.
 
 
+#### --client_max_size MB
+
+The maximum amount of megabytes allowed for file upload. Defaults to 10.
+```
+>>> python3 -m wolframwebengine --client_max_size 150
+----------------------------------------------------------------------
+Address         http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.wl
+----------------------------------------------------------------------
+(Press CTRL+C to quit)
+```
+
 ## Integrating an existing application
 
 Wolfram Web Engine for Python can be used to augment an existing python application instead of creating a new one.
