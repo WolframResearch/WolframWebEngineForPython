@@ -193,6 +193,8 @@ optional arguments:
   --domain DOMAIN       Insert the domain.
   --kernel KERNEL       Insert the kernel path.
   --poolsize POOLSIZE   Insert the kernel pool size.
+  --startuptimeout SECONDS
+                        Startup timeout (in seconds) for kernels in the pool.
   --cached              The server will cache the WL input expression.
   --lazy                The server will start the kernels on the first
                         request.
@@ -318,6 +320,24 @@ Folder          /Users/rdv/Desktop
 Index           index.wl
 ----------------------------------------------------------------------
 (Press CTRL+C to quit)
+```
+
+#### --startuptimeout SECONDS
+
+By default, an attempt to start a kernel will be aborted if the kernel is not ready after 20 seconds. If your application contains long-running initialization code, you may need to raise this timeout.
+```
+>>> python3 -m wolframwebengine
+(...)
+Kernel process started with PID: 485
+Socket exception: Failed to read any message from socket tcp://127.0.0.1:5106 after 20.0 seconds and 245 retries.
+Failed to start.
+
+
+>>> python3 -m wolframwebengine --startuptimeout 50
+(...)
+Kernel process started with PID: 511
+Connected to logging socket: tcp://127.0.0.1:5447
+Kernel 511 is ready. Startup took 35.43 seconds.
 ```
 
 #### --lazy 
