@@ -295,6 +295,21 @@ Index           index.wl
 (Press CTRL+C to quit) 
 ```
 
+
+#### --initfile FILE
+
+Allows you to specify a custom init file
+
+```
+>>> python3 -m wolframwebengine --initfile myinit.m
+----------------------------------------------------------------------
+Address         http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.wl
+----------------------------------------------------------------------
+(Press CTRL+C to quit) 
+```
+
 #### --kernel KERNEL
 
 Allows you to specify the Kernel path
