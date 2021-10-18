@@ -42,6 +42,13 @@ class Command(SimpleCommand):
             "--poolsize", default=1, help="Insert the kernel pool size.", type=int
         )
         parser.add_argument(
+            "--startuptimeout",
+            default=20,
+            help="Startup timeout (in seconds) for kernels in the pool.",
+            type=int,
+            metavar="SECONDS"
+        )
+        parser.add_argument(
             "--cached",
             default=False,
             help="The server will cache the WL input expression.",
@@ -88,7 +95,10 @@ class Command(SimpleCommand):
     def demo_path(self, *args):
         return module_path("wolframwebengine", "examples", "demo", *args)
 
-    def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, **opts):
+    def handle(self,
+        domain, port, path, kernel, poolsize, startuptimeout, 
+        lazy, index, demo, **opts
+    ):
 
         if demo is None or demo:
             path = self.demo_path(self.demo_choices[demo])
@@ -96,7 +106,10 @@ class Command(SimpleCommand):
         path = os.path.abspath(os.path.expanduser(path))
 
         try:
-            session = create_session(kernel, poolsize=poolsize)
+            session = create_session(kernel,
+                poolsize=poolsize,
+                STARTUP_TIMEOUT=startuptimeout
+            )
 
         except WolframKernelException as e:
             self.print(e)
