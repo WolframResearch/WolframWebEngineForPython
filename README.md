@@ -295,6 +295,34 @@ Index           index.wl
 (Press CTRL+C to quit) 
 ```
 
+#### --domain DOMAIN
+
+Allows you to specify the DOMAIN of the webserver. By default the webserver only listens to localhost, use `0.0.0.0` to listen on all network interfaces.
+
+```
+>>> python3 -m wolframwebengine --domain 0.0.0.0
+----------------------------------------------------------------------
+Address         http://0.0.0.0:18000/
+Folder          /Users/rdv/Desktop
+Index           index.wl
+----------------------------------------------------------------------
+(Press CTRL+C to quit) 
+```
+
+#### --initfile FILE
+
+Allows you to specify a custom file containing code to be run when a new kernel is started
+
+```
+>>> python3 -m wolframwebengine --initfile myinit.m
+----------------------------------------------------------------------
+Address         http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.wl
+----------------------------------------------------------------------
+(Press CTRL+C to quit) 
+```
+
 #### --kernel KERNEL
 
 Allows you to specify the Kernel path
@@ -344,6 +372,19 @@ Kernel 511 is ready. Startup took 35.43 seconds.
 
 If the option is present the server will wait for the first request to spawn the kernels, instead of spawning them immediately.
 
+
+#### --client_max_size MB
+
+The maximum amount of megabytes allowed for file upload. Defaults to 10.
+```
+>>> python3 -m wolframwebengine --client_max_size 150
+----------------------------------------------------------------------
+Address         http://localhost:18000/
+Folder          /Users/rdv/Desktop
+Index           index.wl
+----------------------------------------------------------------------
+(Press CTRL+C to quit)
+```
 
 ## Integrating an existing application
 

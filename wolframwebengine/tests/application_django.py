@@ -5,6 +5,7 @@ from django.test import Client
 from wolframclient.utils.api import json
 from wolframclient.utils.functional import first
 from wolframclient.utils.tests import TestCase as BaseTestCase
+
 from wolframwebengine.web.utils import auto_wait
 
 

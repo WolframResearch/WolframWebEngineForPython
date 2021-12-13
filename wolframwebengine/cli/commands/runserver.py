@@ -12,6 +12,7 @@ from wolframclient.utils.api import asyncio
 from wolframclient.utils.decorators import cached_property, to_dict
 from wolframclient.utils.functional import first
 from wolframclient.utils.importutils import module_path
+
 from wolframwebengine.server.app import create_session, create_view, is_wl_code
 
 
@@ -46,7 +47,7 @@ class Command(SimpleCommand):
             default=20,
             help="Startup timeout (in seconds) for kernels in the pool.",
             type=int,
-            metavar="SECONDS"
+            metavar="SECONDS",
         )
         parser.add_argument(
             "--cached",
@@ -72,6 +73,14 @@ class Command(SimpleCommand):
             choices=tuple(self.demo_choices.keys()),
         )
 
+        parser.add_argument(
+            "--client_max_size",
+            default=10,
+            dest="client_max_size",
+            help="Maximum size of client uploads, in Mb",
+            type=float,
+        )
+
     def print_line(self, f="", s=""):
         self.print(f.ljust(15), s)
 
@@ -95,17 +104,32 @@ class Command(SimpleCommand):
     def demo_path(self, *args):
         return module_path("wolframwebengine", "examples", "demo", *args)
 
-    def handle(self, domain, port, path, kernel, poolsize, lazy, index, demo, initfile, startuptimeout, **opts):
+    def handle(
+        self,
+        domain,
+        port,
+        path,
+        kernel,
+        poolsize,
+        lazy,
+        index,
+        demo,
+        initfile,
+        startuptimeout,
+        client_max_size,
+        **opts
+    ):
 
         if demo is None or demo:
             path = self.demo_path(self.demo_choices[demo])
 
         path = os.path.abspath(os.path.expanduser(path))
 
+        client_max_size = int(client_max_size * (1024 ** 2))
+
         try:
-            session = create_session(kernel,
-                poolsize=poolsize, initfile=initfile,
-                STARTUP_TIMEOUT=startuptimeout
+            session = create_session(
+                kernel, poolsize=poolsize, initfile=initfile, STARTUP_TIMEOUT=startuptimeout
             )
 
         except WolframKernelException as e:
@@ -113,11 +137,22 @@ class Command(SimpleCommand):
             self.print("Use --help to display all available options.")
             sys.exit(1)
 
+        loop = asyncio.get_event_loop()
+
         async def main():
 
             view = create_view(session, path, index=index, **opts)
 
-            runner = self.ServerRunner(self.Server(view, access_log_class=self.AccessLogger))
+            def request_factory(*args, **opts):
+                return web.BaseRequest(
+                    *args, **opts, client_max_size=client_max_size, loop=loop
+                )
+
+            runner = self.ServerRunner(
+                self.Server(
+                    view, access_log_class=self.AccessLogger, request_factory=request_factory
+                )
+            )
             await runner.setup()
             await self.TCPSite(runner, domain, port).start()
 
@@ -160,7 +195,6 @@ class Command(SimpleCommand):
             while True:
                 await asyncio.sleep(3600)
 
-        loop = asyncio.get_event_loop()
         try:
             loop.run_until_complete(main())
         except KeyboardInterrupt:
