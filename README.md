@@ -311,7 +311,7 @@ Index           index.wl
 
 #### --initfile FILE
 
-Allows you to specify a custom init file
+Allows you to specify a custom file containing code to be run when a new kernel is started
 
 ```
 >>> python3 -m wolframwebengine --initfile myinit.m
