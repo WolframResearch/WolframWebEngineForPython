@@ -295,6 +295,19 @@ Index           index.wl
 (Press CTRL+C to quit) 
 ```
 
+#### --domain DOMAIN
+
+Allows you to specify the DOMAIN of the webserver. By default the webserver only listens to localhost, use `0.0.0.0` to listen on all network interfaces.
+
+```
+>>> python3 -m wolframwebengine --domain 0.0.0.0
+----------------------------------------------------------------------
+Address         http://0.0.0.0:18000/
+Folder          /Users/rdv/Desktop
+Index           index.wl
+----------------------------------------------------------------------
+(Press CTRL+C to quit) 
+```
 
 #### --initfile FILE
 
