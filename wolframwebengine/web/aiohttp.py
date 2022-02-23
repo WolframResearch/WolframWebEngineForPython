@@ -6,6 +6,7 @@ from wolframclient.language import wl
 from wolframclient.utils.api import aiohttp
 from wolframclient.utils.decorators import to_dict
 from wolframclient.utils.encoding import force_text
+
 from wolframwebengine.web.utils import (
     make_generate_httpresponse_expression,
     process_generate_httpresponse_expression,

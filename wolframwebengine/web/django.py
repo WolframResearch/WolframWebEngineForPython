@@ -4,10 +4,10 @@ from functools import partial
 from operator import attrgetter
 
 from django.http import HttpResponse
-
 from wolframclient.language import wl
 from wolframclient.utils.decorators import to_dict
 from wolframclient.utils.functional import first, iterate, last
+
 from wolframwebengine.web.utils import (
     auto_wait,
     make_generate_httpresponse_expression,

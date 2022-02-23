@@ -1,9 +1,9 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from aiohttp import web
-
 from wolframclient.evaluation import WolframEvaluatorPool
 from wolframclient.language import wl
+
 from wolframwebengine.web import aiohttp_wl_view
 
 session = WolframEvaluatorPool(poolsize=4)

@@ -5,10 +5,10 @@ from urllib.parse import urlparse
 from aiohttp import web
 from aiohttp.formdata import FormData
 from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
-
 from wolframclient.language import wl
 from wolframclient.utils.functional import first
 from wolframclient.utils.importutils import module_path
+
 from wolframwebengine.server.app import create_session, create_view
 from wolframwebengine.web import aiohttp_wl_view
 from wolframwebengine.web.utils import auto_wait
